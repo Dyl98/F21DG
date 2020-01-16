@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/svn/!svn/ver/112/trunk/php/modules/research-duties
+END
+add-form.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/102/trunk/php/modules/research-duties/add-form.php
+END
+add-form-xref.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/90/trunk/php/modules/research-duties/add-form-xref.php
+END
+index.filtered.inc.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/svn/!svn/ver/74/trunk/php/modules/research-duties/index.filtered.inc.php
+END
+edit.inc.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/94/trunk/php/modules/research-duties/edit.inc.php
+END
+remove.php
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/89/trunk/php/modules/research-duties/remove.php
+END
+index.inc.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/!svn/ver/74/trunk/php/modules/research-duties/index.inc.php
+END
+remove-xref.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/90/trunk/php/modules/research-duties/remove-xref.php
+END
+index.unfiltered.inc.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/74/trunk/php/modules/research-duties/index.unfiltered.inc.php
+END
+add.inc.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/74/trunk/php/modules/research-duties/add.inc.php
+END
+controller.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/112/trunk/php/modules/research-duties/controller.php
+END
+edit.php
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/!svn/ver/74/trunk/php/modules/research-duties/edit.php
+END
+edit-form.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/102/trunk/php/modules/research-duties/edit-form.php
+END
+index.php
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/74/trunk/php/modules/research-duties/index.php
+END
+add.php
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/!svn/ver/74/trunk/php/modules/research-duties/add.php
+END

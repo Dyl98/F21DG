@@ -1,0 +1,1 @@
+mysql -D csm -h mysql-server-1 -u csm -pmanagement -t </home/www/macs/cs/CS_Management_System/sql/$1workload.sql >/home/www/macs/cs/CS_Management_System/$1workload.txt

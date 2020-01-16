@@ -1,0 +1,44 @@
+8
+
+dir
+113
+https://hw-hocs-tms.googlecode.com/svn/trunk/js/helpingsystem/jquery
+https://hw-hocs-tms.googlecode.com/svn
+
+
+
+2009-02-20T06:05:46.168411Z
+50
+Jonas.termeau
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+598e12ee-ece1-11dd-9cf0-a157cfa833bd
+
+jquery.tooltip.js
+file
+
+
+
+
+2009-04-03T13:33:08.000000Z
+00e8e420c140ef2bf5182716896b4571
+2009-02-20T06:05:46.168411Z
+50
+Jonas.termeau
+has-props
+
+lib
+dir
+

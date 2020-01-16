@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/102/trunk/php/modules/graphs-and-charts
+END
+staff-pie.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/102/trunk/php/modules/graphs-and-charts/staff-pie.php
+END
+staff-pie-controller.php
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svn/!svn/ver/74/trunk/php/modules/graphs-and-charts/staff-pie-controller.php
+END
+module-pie.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/94/trunk/php/modules/graphs-and-charts/module-pie.php
+END
+workload-graph.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/74/trunk/php/modules/graphs-and-charts/workload-graph.php
+END
+controller.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/84/trunk/php/modules/graphs-and-charts/controller.php
+END
+admin-pie.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/94/trunk/php/modules/graphs-and-charts/admin-pie.php
+END
+staff-bar.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/101/trunk/php/modules/graphs-and-charts/staff-bar.php
+END
+staff-bar-rotated.php
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/!svn/ver/99/trunk/php/modules/graphs-and-charts/staff-bar-rotated.php
+END
+index.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/74/trunk/php/modules/graphs-and-charts/index.php
+END
+research-pie.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/!svn/ver/94/trunk/php/modules/graphs-and-charts/research-pie.php
+END

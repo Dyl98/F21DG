@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/svn/!svn/ver/109/trunk/php/ui-layout
+END
+header.inc
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/109/trunk/php/ui-layout/header.inc
+END
+footer.inc
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/!svn/ver/100/trunk/php/ui-layout/footer.inc
+END
+sidebar.inc.php
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/!svn/ver/109/trunk/php/ui-layout/sidebar.inc.php
+END

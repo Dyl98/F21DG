@@ -1,0 +1,37 @@
+8
+
+dir
+113
+https://hw-hocs-tms.googlecode.com/svn/trunk/php
+https://hw-hocs-tms.googlecode.com/svn
+
+
+
+2009-04-03T13:20:03.223516Z
+113
+Jonas.termeau
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+598e12ee-ece1-11dd-9cf0-a157cfa833bd
+
+core
+dir
+
+modules
+dir
+
+ui-layout
+dir
+
