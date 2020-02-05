@@ -1,0 +1,245 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage[colorlinks=true,urlcolor=magenta]{hyperref} %Used for hyperlinks to reference materials, and section referencing.
+\usepackage{tabulary} %used for tables.
+\usepackage{booktabs} %Used for nicer table formatting eg midrule
+\usepackage{graphicx} %Used for, well, graphics
+\usepackage{float} %Used to put graphics in their place
+\usepackage{enumitem} %Used for modifing the labels used for items in lists. http://mirror.ox.ac.uk/sites/ctan.org/macros/latex/contrib/enumitem/enumitem.pdf
+\usepackage{rotating} %Used for sideways figures
+
+
+\def\sectionautorefname{Section}
+\def\subsectionautorefname{Subsection} % Reassigning the default names to have capitals.
+%The command gives hyperlinked referencings in the form Section #: SectionTitle
+\newcommand{\gref}[1]{\hyperref[#1]{\autoref*{#1}: \nameref{#1}}} % Good referencing = gref
+
+\def\itempar#1\\{\item \textbf{#1}\\} %Macro to automatically bold the first line of an item in a list. Usage is \itempar Line1\\ Line 2...Line N
+
+\def\textul#1{\underline{\smash{#1}}} %Proper text underlining, where the line is not a mile away from the text
+
+\begin{document}
+
+\begin{titlepage}
+	\thispagestyle{empty}
+	{\centering
+		\includegraphics[width=0.5\textwidth]{heriot-watt-logo.png}\par\vspace{1cm}
+	%	{\scshape\LARGE Heriot-Watt University \par}
+		\vspace{1cm}
+		{\LARGE F21DG - Design and Code Project\par}
+		{\LARGE \par}
+		\vspace{1.5cm}
+		{\scshape\Large MACS Department Workload Management System\par}
+		\vspace{1.5cm}
+		{\scshape\LARGE\bfseries Requirements Specification \par}
+
+		\vspace{3.5cm}
+			\begin{center}
+					February 5\textsuperscript{th} 2020
+			\end{center}
+		\textit{Authors}\par
+		\begin{tabular}{rcl}
+			\\ \textsc{Tommy Lamb} & - & H00217505\\
+			\textsc{Dillon Forrest} & - & TODO\\
+		\end{tabular} \\
+	
+	}
+\end{titlepage}
+
+\section{Requirements Specification}
+
+\subsection{Purpose}
+At a high level the primary purpose of the Workload Management System (WMS) is to facilitate the fair distribution of work within the department across staff members. Additionally it is to provide a transparent view of all work currently being carried out (and by whom) to all members of the department. To achieve this goal the WMS will enable staff members to record their existing and upcoming tasks, and provide an overview of the data. The system may also draw attention to situations when certain conditions are met, to assist administration of the department.
+
+\subsection{User Characteristics} \label{subsec:Users}
+
+There are three conceptual groups of users which will interact with the system. Note that any permissions (or lack thereof) detailed below are conditional on implementation of \autoref{freq:Permissions}.
+
+\begin{enumerate}
+\itempar Superuser/root\\
+This group of users are responsible for maintaining and running the WMS software. They will have the ability to override or change any aspect of the system, and will be the only user (in principle) with direct database and server access. They will, whether directly or by proxy, have all of the permissions granted to the Administrator group in addition to their own.
+\itempar Administrator\\
+This group are those members of staff responsible for the assignment and management of tasks at a departmental (or similar) level. For example, the Head of School. These users will have permission to create, view, and edit any task within the system, however they will be constrained to use the WMS interface. They will also be the only users (alongside the Superuser by necessity) who will be able to view sensitive information.
+\itempar Other Staff\\
+Any member of staff within the MACS department who does not fall within one of the other 2 groups belong to this group. For example this may include, but is not limited to, Research Assistants, PhD Students, Lecturers, and Administrative Staff. This group will have the ability to view (but not edit) all tasks within the system. They will have the ability to create tasks to which they are assigned (in other words, to record in the system agreements made by external processes) and edit these -- and only these -- tasks.
+
+Note that as a consequence of this definition, all staff members of the MACS department are considered users of the system (either in this group, or another).
+\end{enumerate}
+
+
+\subsection{Functional User Requirements}
+
+\begin{enumerate}[label=F-UR-\arabic*, series=functional]
+
+\itempar \label{freq:RecordTasks}Record individual tasks\\
+Priority: Must Have\\
+
+\begin{enumerate}[label*=.\arabic*]
+\itempar \label{freq:GenericDetails}Recording of generic task details\\
+	\textul{Priority: Must Have}\\
+	For every new task created the appropriate data must be recorded, and no task will be recorded which fails to meet the minimum requirements. These requirements as follows:
+	\begin{enumerate}[label=\arabic*.]
+	\item Name
+	\item General Text Description
+	\item Task Classification (See \autoref{freq:TaskClassification})
+	\item One or more Assigned Staff Members (See \autoref{freq:StaffAssignment})
+	\item Estimated Measure of Workload
+	\item Timespan over which the task will be carried out (See \autoref{freq:Scheduling})
+	\end{enumerate}
+	
+	Specific task classifications may require the recording of additional data.
+
+
+
+
+\itempar \label{freq:TaskClassification}Classification of Tasks\\
+	\textul{Priority: Must Have}\\
+	Tasks recorded in the system must be assigned one and only one of the following classifications:
+	\begin{enumerate}[label=\arabic*.]
+	\item Teaching
+	\item Research
+	\item Administrative
+	\item External Activity
+	\item Other Authorised Engagement
+	\end{enumerate}
+
+	No classifications outside of those listed here should be used.
+
+
+\itempar Recording of teaching task details\\
+	\textul{Priority: Must Have}\\
+	In addition to the details required in \autoref{freq:GenericDetails}, teaching tasks require and must not be stored without the following details:
+	\begin{enumerate}[label=\arabic*.]
+		\item Course Code (For example, F29LP)
+		\item Course Co-ordinator. The single member of staff principally responsible for delivering the course.
+		\item Number of students participating in the course
+	\end{enumerate}
+
+
+\itempar Recording of research task details\\
+	\textul{Priority: Must Have}\\
+	In addition to the details required in \autoref{freq:GenericDetails}, research tasks require and must not be stored without the following details:
+	\begin{enumerate}[label=\arabic*.]
+		\item State of funding -- either Funded or Unfunded (and not both)
+		\item Principal Investigator. The single member of staff principally responsible for carrying out the research.
+	\end{enumerate}
+	
+	
+\itempar \label{freq:StaffAssignment} Assignment of staff to tasks\\
+	\textul{Priority: Must Have}\\
+	For any given task it must be possible to assign it to one or more staff members. It must also be possible to remove staff from any given task, except where that member of staff is the only one assigned to it. Where only one member of staff is assigned to a task, removal of that member of staff is as yet undefined behaviour and must be considered \textul{unsupported}.
+	
+	For every assignment of a staff member to a task, there must be an associated percentage denoting to what degree the staff member contributes to the overall work of the task. The sum of staff member contributions for any given task must not exceed 100\%. The sum of contributions is permitted to be less than 100\%, however this should be considered a degenerate case (see \autoref{freq:PercentageCondition}). 
+	No staff member is permitted to have a contribution of 0\% to any task.
+	
+	
+\itempar \label{freq:Scheduling}Scheduling of tasks\\
+	\textul{Priority: Must Have}\\
+	Every task must have a start date specified. If applicable, a task may also have an end date. Where a task does not have an end date specified it must be considered to continue in perpetuity. Where an end date is specified, the task may optionally repeat after some time interval -- for example, annually. The start and end dates, and any repetition must be able to be changed at any time.
+\end{enumerate}
+
+\itempar \label{freq:EditTasks}Editing and Deletion of tasks\\
+	\textul{Priority: Must Have}\\
+	It must be possible to edit the details of any given task at any time. It must also be possible to delete tasks from the system at any time. Editing, and particularly deleting, tasks may be subject to restrictions to maintain data or organisational integrity where necessary.
+
+\itempar Access control\\
+Priority: Variable\\
+Highest Priority: Must Have\\
+
+\begin{enumerate}[label*=.\arabic*]
+\itempar Restrict access to authorised users only\\
+	\textul{Priority: Must Have}\\
+	Access to the application must be controlled, such that only authorised users can access it. In general, any staff member of the MACS department (and only of the MACS department) is considered an authorised user. This does not preclude other persons outwith the department being granted access, nor persons within the department being denied access. The mechanics of granting or denying specific persons access is an organisational and technical implementation detail outwith the scope of this document.
+	
+\itempar \label{freq:Permissions}Variable permissions levels for users\\
+	\textul{Priority: Should Have}
+	The ability of any given user to perform operations within the system should be limited inline with their responsibilities within the department. More specifically, users and their permissions should be limited as defined in \autoref{subsec:Users}.
+	
+\itempar Use of existing authentication mechanisms\\
+	\textul{Priority: Could Have}\\
+	If possible, the system could have the ability to utilise an existing authentication mechanism used within the university -- for example, the MACS departmental login. Depending on the functionality afforded by any such mechanism, that mechanism may become the only used within the system.
+
+
+\end{enumerate}
+
+
+\itempar Recording of staff details\\
+	\textul{Priority: Must Have}\\
+	In order that they may usefully be assigned to tasks (as per \autoref{freq:StaffAssignment}), the following details should be recorded for all users:
+	\begin{enumerate}[label=\arabic*.]
+	\item Name
+	\item Office Number
+	\item Email address
+	\item Telephone Extension Number
+	\item Campus
+	\end{enumerate}
+	
+	This data must be able to be edited at any time.
+
+
+
+\itempar Grouping of staff members\\
+	\textul{Priority: Could Have}\\
+	The system could support the grouping of staff members to mirror the organisation of the department. For example, by research interest or by department within a school.
+
+\itempar Notification of degenerate or noteworthy conditions\\
+Priority: Variable\\
+Highest Priority: Should Have\\
+
+\begin{enumerate}[label*=.\arabic*]
+
+\itempar Reporting tasks nearing completion\\
+	\textul{Priority: Should Have}\\
+	Users should be notified when tasks they are assigned to are nearing completion. Such notifications could also be shown to Admin users.
+	
+\itempar Reporting exceptional individual loads\\
+	\textul{Priority: Should Have}\\
+	Admin users should be notified when members of staff have workloads above or below the departmental average, where the workload exits variance. This notification may also include fixed limits which are not defined relative to the departmental average.
+
+\itempar Reporting imbalances in an individual's task classifications\\
+	\textul{Priority: Should Have}\\
+	Admin users should be notified when the distribution of a user's time between Teaching, Research, and Administrative tasks exceeds acceptable limits. For example, if a user spends a disproportionate amount of time on Research tasks compared to teaching and administration.
+
+\itempar \label{freq:PercentageCondition}Reporting under-assigned tasks\\
+	\textul{Priority: Should Have}
+	Admin users should be notified when the total percentage contribution of users to a given task does not equal 100\%.
+	
+\itempar Suppression of notifications\\
+	\textul{Priority: Could Have}\\
+	Users could have the ability to suppress notifications such that ongoing situations, or exceptions to the established rules, do not dilute the value of the notifications overall. An excessive number of notifications could cause users to disregard all notifications. Conversely users may forget and fail to deal with situations after suppressing notifications(s). As such, the extent to which notifications can be suppressed, if at all, must be decided through experimentation and consequently out of scope for this document.
+
+\end{enumerate}
+
+
+\itempar Planning view\\
+	\textul{Priority: Should Have}\\
+	 The system should provide to admin users a 'planning view', allowing them to carry out \autoref{freq:RecordTasks} and \autoref{freq:EditTasks} without the changes being visible to other users in order to plan for the future. Tasks created in this view will be subject to all of the same restrictions and notifications. There should also be the ability to 'import' all tasks from the main system view in the planning view, such that they can be edited in isolation without affecting the main view of the system or other non-admin users. 
+
+
+
+\itempar Overview of assigned tasks\\
+	\textul{Priority: Must Have}\\
+	The system must provide to all users a general overview of all assigned tasks. The exact data to be included is not specified, however the following are suggested and given as examples:
+	\begin{enumerate}[label=\arabic*.]
+	\item A bar chart of the workloads of individual staff members to allow easy visual identification of outliers.
+	\item A pie chart of the distribution of work between different task classifications for a given user. This may also be aggregated over a group of users.
+	\item A line chart showing the anticipated future workload for an individual. This may also show multiple users, either as multiple lines on the chart or in aggregation.
+	\end{enumerate}
+
+\end{enumerate}
+
+\subsection{Non-Functional User Requirements}
+
+\begin{enumerate}[label=NF-UR-\arabic*, series=functional]
+
+\itempar Academic date system\\
+\underline{\smash{Priority: Should Have}}\\
+
+The date system used within WMS should be based upon the academic year, rather than the calender (or any other) year system.
+
+
+\end{enumerate}
+
+\end{document}
