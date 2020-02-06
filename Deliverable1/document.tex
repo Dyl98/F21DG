@@ -11,6 +11,9 @@
 \usepackage{rotating} %Used for sideways figures
 
 
+\usepackage{pdflscape}%Allows pages to be made landscape in conforming PDF viewers.Unknown behaviour when printing.
+%http://mirror.ox.ac.uk/sites/ctan.org/macros/latex/contrib/oberdiek/pdflscape.pdf
+
 \def\sectionautorefname{Section}
 \def\subsectionautorefname{Subsection} % Reassigning the default names to have capitals.
 %The command gives hyperlinked referencings in the form Section #: SectionTitle
@@ -33,11 +36,11 @@
 		\vspace{1.5cm}
 		{\scshape\Large MACS Department Workload Management System\par}
 		\vspace{1.5cm}
-		{\scshape\LARGE\bfseries Requirements Specification \par}
+		{\scshape\LARGE\bfseries Deliverable One \par}
 
 		\vspace{3.5cm}
 			\begin{center}
-					February 5\textsuperscript{th} 2020
+					February 6\textsuperscript{th} 2020
 			\end{center}
 		\textit{Authors}\par
 		\begin{tabular}{rcl}
@@ -228,6 +231,10 @@ Highest Priority: Should Have\\
 	\item A line chart showing the anticipated future workload for an individual. This may also show multiple users, either as multiple lines on the chart or in aggregation.
 	\end{enumerate}
 
+\itempar Support of multiple languages\\
+	\textul{Priority: Will Not}\\
+	The system will not support multiple languages. The system should support Unicode, however the interface will be in English only.
+
 \end{enumerate}
 
 \subsection{Non-Functional User Requirements}
@@ -242,28 +249,28 @@ The date system used within WMS should be based upon the academic year, rather t
 
 \end{enumerate}
 
-
+\pagebreak
 \section{Risk Analysis}
 
 The risks identified in this section should be quantified with respect to the following impact matrix:
 
-\begin{tabulary}{l|l|l|l|l|l}
-	% TODO add vertical multicolumn for Likelihood
-	&\multirow{5}{Consequence}\\
-	& Trivial & Minor & Moderate & Major & Severe \\
+\begin{tabulary}{\textwidth}{l|l|l|l|l|l}
+	 &\multicolumn{5}{c}{Consequence}\\ \cmidrule{2-6}
+	Likelihood & Trivial & Minor & Moderate & Major & Severe \\ \midrule
 	Almost Certain & Low & High & High & Extreme & Extreme \\
 	Likely & Low & Moderate & High & High & Extreme \\
 	Possible & Low & Moderate & Moderate & High & Extreme \\
 	Unlikely & Low & Moderate & Moderate & High & High \\
 	Rare & Low & Low & Moderate & Moderate & High \\
-\end{tabulary}
+\end{tabulary}\\
 
 Extreme risks are those requireing immediate corrective action. High risk issues require some immediate mitigation, and may require investigation leading to additional corrective actions. Moderate risks will benefit from adaptations or adjustments to mitigate consequence or likelihood, but do not require immediate action. Low risk items are either considered acceptable occurances, or can be adaquately dealt with as and when they arise.
 
-The following risks have been identified:
+The following risks have been identified (see next page):
 
-\begin{tabulary}{l|l|l|l}
-	Risk & Mitigation & Likelihood & Consequences \\
+\begin{landscape}
+\begin{tabulary}{1.8\textwidth}{L|L|l|l}
+	Risk & Mitigation & Likelihood & Consequences \\\toprule
 	A team member falls ill & Keep group members up to date on current work in progress, and keep this work accessible & Unlikely & Moderate\\
 	Loss of data & Back up work regularly to an external version control server/service. Ensure that there is always at least 2 copies of any data and those copies are not co-located either physically or virtually. & Rare & Major \\
 	Failure to implement main features in time available & Weekly progress meetings with stakeholder(s) to ensure the project is on track. Triaging features if neccessary to ensure a minimum-viable product is delviered & Possible & Moderate \\
@@ -275,4 +282,6 @@ The following risks have been identified:
 	Expected hosting environment is insufficient & Develop and continually test the software in the intended hosting environment. Identify early any inadaquacies and discuss resolutions with stakeholder(s) & Rare & Major \\
 
 \end{tabulary}
+
+\end{landscape}
 \end{document}
