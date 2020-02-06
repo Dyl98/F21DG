@@ -242,4 +242,37 @@ The date system used within WMS should be based upon the academic year, rather t
 
 \end{enumerate}
 
+
+\section{Risk Analysis}
+
+The risks identified in this section should be quantified with respect to the following impact matrix:
+
+\begin{tabulary}{l|l|l|l|l|l}
+	% TODO add vertical multicolumn for Likelihood
+	&\multirow{5}{Consequence}\\
+	& Trivial & Minor & Moderate & Major & Severe \\
+	Almost Certain & Low & High & High & Extreme & Extreme \\
+	Likely & Low & Moderate & High & High & Extreme \\
+	Possible & Low & Moderate & Moderate & High & Extreme \\
+	Unlikely & Low & Moderate & Moderate & High & High \\
+	Rare & Low & Low & Moderate & Moderate & High \\
+\end{tabulary}
+
+Extreme risks are those requireing immediate corrective action. High risk issues require some immediate mitigation, and may require investigation leading to additional corrective actions. Moderate risks will benefit from adaptations or adjustments to mitigate consequence or likelihood, but do not require immediate action. Low risk items are either considered acceptable occurances, or can be adaquately dealt with as and when they arise.
+
+The following risks have been identified:
+
+\begin{tabulary}{l|l|l|l}
+	Risk & Mitigation & Likelihood & Consequences \\
+	A team member falls ill & Keep group members up to date on current work in progress, and keep this work accessible & Unlikely & Moderate\\
+	Loss of data & Back up work regularly to an external version control server/service. Ensure that there is always at least 2 copies of any data and those copies are not co-located either physically or virtually. & Rare & Major \\
+	Failure to implement main features in time available & Weekly progress meetings with stakeholder(s) to ensure the project is on track. Triaging features if neccessary to ensure a minimum-viable product is delviered & Possible & Moderate \\
+	Change of requirements & Regular meetings with stakeholder(s) to ensure changes are communicated as early as possible & Likely & Moderate \\
+	Insufficient time for thorough testing & Test software continuously during development as new features are implemented (unit and integration testing) & Possible & Moderate \\
+	Major issue arising after delivery & Extensive acceptance testing by the end users prior to handover, and continuous testing during development & Possible & Major \\
+	UCU members strike & Ensure that all required data is accessible without reliance on members of the UCU. University facilities have been maintained during previous strike action, and with no related teaching being delivered, impact is trivial & Almost Certain & Trivial \\ 
+	Severe weather preventing travel & Ensure mechanisms are in place for communication and data sharing across the internet & Rare & Minor \\
+	Expected hosting environment is insufficient & Develop and continually test the software in the intended hosting environment. Identify early any inadaquacies and discuss resolutions with stakeholder(s) & Rare & Major \\
+
+\end{tabulary}
 \end{document}
