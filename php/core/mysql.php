@@ -1,20 +1,29 @@
 <?php
-	//
-	// This MySQL Class written by Scott Straughan and used here with consent
-	//
+/**
+ * @file 	mysql.php
+ * @brief 	Common mysqli functions that are used throughout.
+ */
 
-class CMySQL {
+class mySQLi_helper {
 
 	var $sql_username;
 	var $sql_password;
 	var $sql_database;
 	var $sql_hostname;
 	
-	var $sql_data_stream;
+	var $mysqli_connection;
+
 	var $sql_query_queue;
 
-	
-	function CMySQL($user="csm",$password="management",$db="csm",$host="mysql-server-1"){
+	/**
+	 * @brief 	Constructor function that is called whenever the class is instantiated
+	 *
+	 * @param 	$user 		Username used to connect to the database
+	 * @param 	$password 	Password used to connect to the database
+	 * @param 	$db 		Database to connect to
+	 * @param 	$host 		Host to connect to. This is where the database is located
+	 */
+	function __construct($user="csm",$password="management",$db="csm",$host="localhost"){
 		// Generate connection details
 		$this->sql_username = $user;
 		$this->sql_password = $password;
@@ -22,69 +31,57 @@ class CMySQL {
 		$this->sql_hostname = $host;
 	}
 
-	function connect_to_server(){
-		// Check connection details and connect if ok
-		if( !$this->sql_connection_stream = mysql_connect($this->sql_hostname,$this->sql_username,$this->sql_password) ) {
-			return "SQL Error: Username, password or hostname is incorrect.";
-		}
-		// Connect to database
-		if ( !mysql_select_db( $this->sql_database ) ) {
-			return "SQL Error: Database `".$this->sql_database."` does not exist.";
+	/**
+	 * @brief 	Connects to the database with the credentials given in the constructor function
+	 */
+	function connect_to_database(){
+		$this->mysqli_connection = new mysqli($this->sql_hostname, $this->sql_username, $this->sql_password, $this->sql_database);
+		if ($this->mysqli_connection -> connect_errno) {
+			echo "Failed to connect to MySQL: " . $this->mysqli_connection -> connect_errno . '-' . $this->mysqli_connection -> connect_error;
+			exit();
 		}
 	}
 
-	function sql_disconnect(){
-		// Try and disconnect from the mysql connection
-		if(mysql_close($this->sql_connection_stream)){
-			return true;
-		}
-	}
-	
-	function query_server($query) {
-		// Check if the current sql statement is valid
-		if($this->validate_sql_query($query) == TRUE){
-			// Query server
-			$result = mysql_query($query);
-			// Return the result of query
-			return $result;
-			
-		}else{ return false; }
-	}
-	
-	function validate_sql_query($query) {
-		// Do some validation here
-		mysql_real_escape_string($query);
-		return true;
+	/**
+	 * @brief 	Closes a connection to the database
+	 */
+	function disconnect_from_database(){
+		$this->mysqli_connection -> close();
 	}
 
+	/**
+	 * @brief 	Executes a given query and returns the output
+	 *
+	 * @param 	$query 	Query to be executed
+	 *
+	 * @return 	A mysqli_result object if the query was SELECT, SHOW, DESCRIBE, or EXPLAIN
+	 * @return	True for other successful queries
+	 * @return	False on failure
+	 */
+	function query_database($query){
 
-	function get_row_count(){
 		// Create connection to sql server
-		$this->connect_to_server();
-		// Return the number of rows for query
-		return ( mysql_num_rows($this->query_server($this->sql_query_queue[0])) );
-	}
-	
-	function get_data($query){
-		// Create connection to sql server
-		$this->connect_to_server();
+		$this->connect_to_database();
 
-		// Query the server
-		$sql_result = $this->query_server($query);
-		// Reserve some memory for result
 		$result_array = array();
-	
-		// Fetch all the row and colum data
-		while ( $result_row = mysql_fetch_assoc($sql_result) ) {
-			$result_array[] = $result_row;
+
+		$result = $this->mysqli_connection -> query($query);
+		// Query the server
+		if (is_object($result)) {	
+			// Fetch all the row and colum data
+			$result_array = $result -> fetch_all(MYSQLI_ASSOC);
+			$return_val = $result_array;
+		} else {
+			$return_val = $result;
 		}
-		
+
 		// Disconnect from sql server
-		$this->sql_disconnect();
+		$this->disconnect_from_database();
 		
-		return $result_array;
+		return $return_val;
 	}
 
+	//TODO: REMOVE ALL BELOW
 
 	function add_query($query){
 		$this->sql_query_queue[(count($this->sql_query_queue))] = $query;
@@ -92,12 +89,12 @@ class CMySQL {
 
 	function query(){
 		// Create connection to sql server
-		$this->connect_to_server();
+		$this->connect_to_database();
 		
 		// Cycle through each query in queue and put result (or error) into a returning array
 		for($counter = 0; $counter < (count($this->sql_query_queue)); $counter++){
 		
-			$return_results[$counter] = $this->query_server($this->sql_query_queue[$counter]);
+			$return_results[$counter] = $this->query_database($this->sql_query_queue[$counter]);
 			
 			// If error occured, replace "result" with the error message
 			if(mysql_error($this->sql_connection_stream)) { 
@@ -106,7 +103,7 @@ class CMySQL {
 		}
 		
 		// Disconnect from sql server
-		$this->sql_disconnect();
+		$this->disconnect_from_database();
 
 		return $return_results;
 	}

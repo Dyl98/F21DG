@@ -7,8 +7,8 @@
 <?php
 	function show_current_modules() {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$current_modules = $sql_connection->get_data("SELECT * FROM current_modules ORDER BY name ASC");
+		$sql_connection = new mySQLi_helper();
+		$current_modules = $sql_connection->query_database("SELECT * FROM current_modules ORDER BY name ASC");
 		
 		/* Loop and display query results */
 		foreach($current_modules as $current_module){
@@ -31,8 +31,8 @@
 <?php
 	function show_current_modules_filtered($period) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$current_modules = $sql_connection->get_data("SELECT * FROM current_modules WHERE availability".$period." = 1 ORDER BY name ASC");
+		$sql_connection = new mySQLi_helper();
+		$current_modules = $sql_connection->query_database("SELECT * FROM current_modules WHERE availability".$period." = 1 ORDER BY name ASC");
 		
 		/* Loop and display query results */
 		foreach($current_modules as $current_module){
@@ -99,8 +99,8 @@
 <?php
 	function edit_module($moduleid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$current_modules = $sql_connection->get_data("SELECT * FROM current_modules WHERE moduleid=".$moduleid." ORDER BY name ASC");
+		$sql_connection = new mySQLi_helper();
+		$current_modules = $sql_connection->query_database("SELECT * FROM current_modules WHERE moduleid=".$moduleid." ORDER BY name ASC");
 		
 		/* Loop and display query results */
 		foreach($current_modules as $current_module){
@@ -152,7 +152,7 @@
 <?php
 	function remove_module($moduleid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		$sql_connection->add_query("DELETE FROM current_modules WHERE moduleid = ".$moduleid);
 		$sql_connection->add_query("DELETE FROM current_modules_xref WHERE moduleid = ".$moduleid);
 		$result = $sql_connection->query();
@@ -164,9 +164,9 @@
 <?php
 	function add_module_xref($moduleid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$staff_members = $sql_connection->get_data("SELECT DISTINCT * FROM staff_members WHERE (staff_members.staffid) NOT IN ( SELECT current_modules_xref.staffid FROM current_modules_xref WHERE current_modules_xref.moduleid = ".$moduleid.") ORDER BY forename ASC");
-		$all_percentages = $sql_connection->get_data("SELECT * FROM current_modules_xref WHERE current_modules_xref.moduleid = ".$moduleid);
+		$sql_connection = new mySQLi_helper();
+		$staff_members = $sql_connection->query_database("SELECT DISTINCT * FROM staff_members WHERE (staff_members.staffid) NOT IN ( SELECT current_modules_xref.staffid FROM current_modules_xref WHERE current_modules_xref.moduleid = ".$moduleid.") ORDER BY forename ASC");
+		$all_percentages = $sql_connection->query_database("SELECT * FROM current_modules_xref WHERE current_modules_xref.moduleid = ".$moduleid);
 		foreach($all_percentages as $all_percentage){
 			$total_percentage += $all_percentage["percentage"];
 		}
@@ -234,8 +234,8 @@
 <?php
 	function view_module_xref($moduleid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$staff_members = $sql_connection->get_data("SELECT current_modules_xref.staffid, current_modules_xref.moduleid, current_modules_xref.percentage, staff_members.staffid, staff_members.forename, staff_members.surname, staff_members.email FROM current_modules_xref, staff_members WHERE (current_modules_xref.moduleid = \"".$moduleid."\") AND (current_modules_xref.staffid = staff_members.staffid) ORDER BY forename ASC");
+		$sql_connection = new mySQLi_helper();
+		$staff_members = $sql_connection->query_database("SELECT current_modules_xref.staffid, current_modules_xref.moduleid, current_modules_xref.percentage, staff_members.staffid, staff_members.forename, staff_members.surname, staff_members.email FROM current_modules_xref, staff_members WHERE (current_modules_xref.moduleid = \"".$moduleid."\") AND (current_modules_xref.staffid = staff_members.staffid) ORDER BY forename ASC");
 		
 		/* Loop and display query results */
 		$counter = 0;
@@ -260,7 +260,7 @@
 <?php
 	function remove_module_xref($staffid,$moduleid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		$sql_connection->add_query("DELETE FROM current_modules_xref WHERE (staffid = ".$staffid.") AND (moduleid = ".$moduleid.")");
 		$result = $sql_connection->query();
 		return;
@@ -270,8 +270,8 @@
 <?php
      	function get_current_module_infos($moduleid)
         {
-               	$sql_connection = new CMySQL();
-               	$infos = $sql_connection->get_data("SELECT * FROM current_modules WHERE moduleid = ".$moduleid.";");
+               	$sql_connection = new mySQLi_helper();
+               	$infos = $sql_connection->query_database("SELECT * FROM current_modules WHERE moduleid = ".$moduleid.";");
 
                 return $infos;
        	}

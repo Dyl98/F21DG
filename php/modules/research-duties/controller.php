@@ -7,8 +7,8 @@
 <?php
 	function show_research_duties() {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$research_duties = $sql_connection->get_data("SELECT * FROM research_duties ORDER BY name ASC");
+		$sql_connection = new mySQLi_helper();
+		$research_duties = $sql_connection->query_database("SELECT * FROM research_duties ORDER BY name ASC");
 		
 		/* Loop and display query results */
 		foreach($research_duties as $research_duty){
@@ -32,8 +32,8 @@
 <?php
 	function show_research_duties_filtered($period) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$research_duties = $sql_connection->get_data("SELECT * FROM research_duties WHERE availability".$period." = 1 ORDER BY name ASC");
+		$sql_connection = new mySQLi_helper();
+		$research_duties = $sql_connection->query_database("SELECT * FROM research_duties WHERE availability".$period." = 1 ORDER BY name ASC");
 		
 		/* Loop and display query results */
 		foreach($research_duties as $research_duty){
@@ -102,8 +102,8 @@
 <?php
 	function edit_research_duty($researchid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$research_duties = $sql_connection->get_data("SELECT * FROM research_duties WHERE researchid=".$researchid." ORDER BY name ASC");
+		$sql_connection = new mySQLi_helper();
+		$research_duties = $sql_connection->query_database("SELECT * FROM research_duties WHERE researchid=".$researchid." ORDER BY name ASC");
 		
 		/* Loop and display query results */
 		foreach($research_duties as $research_duty){
@@ -155,7 +155,7 @@
 <?php
 	function remove_research_duty($researchid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		$sql_connection->add_query("DELETE FROM research_duties WHERE researchid = ".$researchid);
 		$sql_connection->add_query("DELETE FROM research_duties_xref WHERE researchid = ".$researchid);
 		$result = $sql_connection->query();
@@ -167,9 +167,9 @@
 <?php
 	function add_research_duty_xref($researchid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$staff_members = $sql_connection->get_data("SELECT DISTINCT * FROM staff_members WHERE (staff_members.staffid) NOT IN ( SELECT research_duties_xref.staffid FROM research_duties_xref WHERE research_duties_xref.researchid = ".$researchid.") ORDER BY forename ASC");
-		$all_percentages = $sql_connection->get_data("SELECT * FROM research_duties_xref WHERE research_duties_xref.researchid = ".$researchid);
+		$sql_connection = new mySQLi_helper();
+		$staff_members = $sql_connection->query_database("SELECT DISTINCT * FROM staff_members WHERE (staff_members.staffid) NOT IN ( SELECT research_duties_xref.staffid FROM research_duties_xref WHERE research_duties_xref.researchid = ".$researchid.") ORDER BY forename ASC");
+		$all_percentages = $sql_connection->query_database("SELECT * FROM research_duties_xref WHERE research_duties_xref.researchid = ".$researchid);
 		foreach($all_percentages as $all_percentage){
 			$total_percentage += $all_percentage["percentage"];
 		}
@@ -221,8 +221,8 @@
 <?php
 	function view_research_duty_xref($researchid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$staff_members = $sql_connection->get_data("SELECT research_duties_xref.staffid, research_duties_xref.researchid, research_duties_xref.percentage, staff_members.staffid, staff_members.forename, staff_members.surname, staff_members.email FROM research_duties_xref, staff_members WHERE (research_duties_xref.researchid = \"".$researchid."\") AND (research_duties_xref.staffid = staff_members.staffid) ORDER BY forename ASC");
+		$sql_connection = new mySQLi_helper();
+		$staff_members = $sql_connection->query_database("SELECT research_duties_xref.staffid, research_duties_xref.researchid, research_duties_xref.percentage, staff_members.staffid, staff_members.forename, staff_members.surname, staff_members.email FROM research_duties_xref, staff_members WHERE (research_duties_xref.researchid = \"".$researchid."\") AND (research_duties_xref.staffid = staff_members.staffid) ORDER BY forename ASC");
 		
 		/* Loop and display query results */
 		foreach($staff_members as $staff_member){
@@ -245,7 +245,7 @@
 <?php
 	function remove_research_duty_xref($staffid,$researchid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		$sql_connection->add_query("DELETE FROM research_duties_xref WHERE (staffid = ".$staffid.") AND (researchid = ".$researchid.")");
 		$result = $sql_connection->query();
 		return;
@@ -255,8 +255,8 @@
 <?php
         function get_research_duty_infos($researchid)
         {
-               	$sql_connection = new CMySQL();
-               	$infos = $sql_connection->get_data("SELECT * FROM research_duties WHERE researchid = ".$researchid.";");
+               	$sql_connection = new mySQLi_helper();
+               	$infos = $sql_connection->query_database("SELECT * FROM research_duties WHERE researchid = ".$researchid.";");
 
                 return $infos;
        	}

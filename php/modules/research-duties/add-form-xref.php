@@ -4,7 +4,7 @@
 	
 	/* If file is being called from form, insert new data into database */
 	if($_POST){
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		$sql_connection->add_query("INSERT INTO research_duties_xref VALUES ('".$_POST['staffid']."','".$_POST['researchid']."','".$_POST['percentage']."');");
 		$result = $sql_connection->query();
 		

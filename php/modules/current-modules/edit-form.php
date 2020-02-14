@@ -4,7 +4,7 @@
 	
 	/* If file is being called from form, update data in database */
 	if($_POST){
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		$sql_connection->add_query("UPDATE current_modules SET code = \"".strip_tags($_POST['code'])."\", name = \"".strip_tags($_POST['name'])."\", descriptor = \"".strip_tags($_POST['descriptor'])."\", weighting = \"".$_POST['weighting']."\", availability1 = \"".$_POST['availability1']."\", availability2 = \"".$_POST['availability2']."\", availability3 = \"".$_POST['availability3']."\", availability4 = \"".$_POST['availability4']."\", availability5 = \"".$_POST['availability5']."\" WHERE moduleid = ".$_POST['moduleid']);
 		$result = $sql_connection->query();
 		

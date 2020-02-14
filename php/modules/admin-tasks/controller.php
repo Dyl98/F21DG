@@ -7,8 +7,8 @@
 <?php
 	function show_admin_tasks() {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$admin_tasks = $sql_connection->get_data("SELECT * FROM admin_tasks ORDER BY name ASC");
+		$sql_connection = new mySQLi_helper();
+		$admin_tasks = $sql_connection->query_database("SELECT * FROM admin_tasks ORDER BY name ASC");
 		
 		/* Loop and display query results */
 		foreach($admin_tasks as $admin_task){
@@ -31,8 +31,8 @@
 <?php
 	function show_admin_tasks_filtered($period) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$admin_tasks = $sql_connection->get_data("SELECT * FROM admin_tasks WHERE availability".$period." = 1 ORDER BY name ASC");
+		$sql_connection = new mySQLi_helper();
+		$admin_tasks = $sql_connection->query_database("SELECT * FROM admin_tasks WHERE availability".$period." = 1 ORDER BY name ASC");
 		
 		/* Loop and display query results */
 		foreach($admin_tasks as $admin_task){
@@ -95,8 +95,8 @@
 <?php
 	function edit_admin_task($adminid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$admin_tasks = $sql_connection->get_data("SELECT * FROM admin_tasks WHERE adminid=".$adminid." ORDER BY name ASC");
+		$sql_connection = new mySQLi_helper();
+		$admin_tasks = $sql_connection->query_database("SELECT * FROM admin_tasks WHERE adminid=".$adminid." ORDER BY name ASC");
 		
 		/* Loop and display query results */
 		foreach($admin_tasks as $admin_task){
@@ -144,7 +144,7 @@
 <?php
 	function remove_admin_task($adminid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		$sql_connection->add_query("DELETE FROM admin_tasks WHERE adminid = ".$adminid);
 		$sql_connection->add_query("DELETE FROM admin_tasks_xref WHERE adminid = ".$adminid);
 		$result = $sql_connection->query();
@@ -156,9 +156,9 @@
 <?php
 	function add_admin_task_xref($adminid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$staff_members = $sql_connection->get_data("SELECT DISTINCT * FROM staff_members WHERE (staff_members.staffid) NOT IN ( SELECT admin_tasks_xref.staffid FROM admin_tasks_xref WHERE admin_tasks_xref.adminid = ".$adminid.") ORDER BY forename ASC");
-		$all_percentages = $sql_connection->get_data("SELECT * FROM admin_tasks_xref WHERE admin_tasks_xref.adminid = ".$adminid);
+		$sql_connection = new mySQLi_helper();
+		$staff_members = $sql_connection->query_database("SELECT DISTINCT * FROM staff_members WHERE (staff_members.staffid) NOT IN ( SELECT admin_tasks_xref.staffid FROM admin_tasks_xref WHERE admin_tasks_xref.adminid = ".$adminid.") ORDER BY forename ASC");
+		$all_percentages = $sql_connection->query_database("SELECT * FROM admin_tasks_xref WHERE admin_tasks_xref.adminid = ".$adminid);
 		foreach($all_percentages as $all_percentage){
 			$total_percentage += $all_percentage["percentage"];
 		}
@@ -226,8 +226,8 @@
 <?php
 	function view_admin_task_xref($adminid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$staff_members = $sql_connection->get_data("SELECT admin_tasks_xref.staffid, admin_tasks_xref.adminid, admin_tasks_xref.percentage, staff_members.staffid, staff_members.forename, staff_members.surname, staff_members.email FROM admin_tasks_xref, staff_members WHERE (admin_tasks_xref.adminid = \"".$adminid."\") AND (admin_tasks_xref.staffid = staff_members.staffid) ORDER BY forename ASC");
+		$sql_connection = new mySQLi_helper();
+		$staff_members = $sql_connection->query_database("SELECT admin_tasks_xref.staffid, admin_tasks_xref.adminid, admin_tasks_xref.percentage, staff_members.staffid, staff_members.forename, staff_members.surname, staff_members.email FROM admin_tasks_xref, staff_members WHERE (admin_tasks_xref.adminid = \"".$adminid."\") AND (admin_tasks_xref.staffid = staff_members.staffid) ORDER BY forename ASC");
 		
 		/* Loop and display query results */
 		$counter = 0;
@@ -252,7 +252,7 @@
 <?php
 	function remove_admin_task_xref($staffid,$adminid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		$sql_connection->add_query("DELETE FROM admin_tasks_xref WHERE (staffid = ".$staffid.") AND (adminid = ".$adminid.")");
 		$result = $sql_connection->query();
 		return;
@@ -262,8 +262,8 @@
 <?php
         function get_admin_task_infos($adminid)
         {
-                $sql_connection = new CMySQL();
-                $infos = $sql_connection->get_data("SELECT * FROM admin_tasks WHERE adminid = ".$adminid.";");
+                $sql_connection = new mySQLi_helper();
+                $infos = $sql_connection->query_database("SELECT * FROM admin_tasks WHERE adminid = ".$adminid.";");
 
                 return $infos;
         }
