@@ -35,9 +35,11 @@ class mySQLi_helper {
 	 * @brief 	Connects to the database with the credentials given in the constructor function
 	 */
 	function connect_to_database(){
-		$this->mysqli_connection = new mysqli($this->sql_hostname, $this->sql_username, $this->sql_password, $this->sql_database);
-		if ($this->mysqli_connection -> connect_errno) {
-			echo "Failed to connect to MySQL: " . $this->mysqli_connection -> connect_errno . '-' . $this->mysqli_connection -> connect_error;
+		try {
+			$this->mysqli_connection = new PDO("mysql:host=$this->sql_hostname;dbname=$this->sql_database", $this->sql_username, $this->sql_password);
+			$this->mysqli_connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		} catch(PDOException $e) {
+			echo "Failed to connect to MySQL: " . $e->getMessage();
 			exit();
 		}
 	}
@@ -46,7 +48,7 @@ class mySQLi_helper {
 	 * @brief 	Closes a connection to the database
 	 */
 	function disconnect_from_database(){
-		$this->mysqli_connection -> close();
+		$this->mysqli_connection = null;
 	}
 
 	/**
@@ -65,24 +67,18 @@ class mySQLi_helper {
 
 		$result_array = array();
 
-		$result = $this->mysqli_connection -> query($query);
-		// Query the server
-		if (is_object($result)) {	
-			// Fetch all the row and colum data
-			$result_array = $result -> fetch_all(MYSQLI_ASSOC);
-			$return_val = $result_array;
-		} else {
-			$return_val = $result;
-		}
+		$stmt = $this->mysqli_connection -> query($query);
+		$result = $stmt->fetchAll();
 
 		// Disconnect from sql server
 		$this->disconnect_from_database();
 		
-		return $return_val;
+		return $result;
 	}
 
-	//TODO: REMOVE ALL BELOW
-
+	//----------------------------------------------------------------\\
+	//                    TODO: REMOVE ALL BELOW                      \\
+	//----------------------------------------------------------------\\	
 	function add_query($query){
 		$this->sql_query_queue[(count($this->sql_query_queue))] = $query;
 	}
