@@ -40,16 +40,26 @@
 
 		\vspace{3.5cm}
 			\begin{center}
-					February 6\textsuperscript{th} 2020
+					February 7\textsuperscript{th} 2020
 			\end{center}
 		\textit{Authors}\par
 		\begin{tabular}{rcl}
 			\\ \textsc{Tommy Lamb} & - & H00217505\\
-			\textsc{Dillon Forrest} & - & H00216546\\
+			\textsc{Dylan Forrest} & - & H00216546\\
 		\end{tabular} \\
 	
 	}
 \end{titlepage}
+
+\tableofcontents
+\pagebreak
+
+\section{Management Plan}
+Due to the small size of the team a flat informal management system will be applied --- the overheads of any formal system would not yield any benefit to the project. Meetings between members and stakeholder(s) will be held regularly to ensure project success.
+
+\section{Evaluation of Existing System}
+We've evaluated the existing system and decided that we want to reuse, as much as possible, the existing application code. In particular we wish to reuse most of the GUI code to minimise changes to the end users. We do anticipate needing to refactor the existing code however, to improve maintainability and clarity. Similarly we have decided to redesign and implement the database component with only vague reference to the existing design, due to inadequacies in it.
+
 
 \section{Requirements Specification}
 
@@ -157,7 +167,7 @@ Highest Priority: Must Have\\
 	Access to the application must be controlled, such that only authorised users can access it. In general, any staff member of the MACS department (and only of the MACS department) is considered an authorised user. This does not preclude other persons outwith the department being granted access, nor persons within the department being denied access. The mechanics of granting or denying specific persons access is an organisational and technical implementation detail outwith the scope of this document.
 	
 \itempar \label{freq:Permissions}Variable permissions levels for users\\
-	\textul{Priority: Should Have}
+	\textul{Priority: Should Have}\\
 	The ability of any given user to perform operations within the system should be limited inline with their responsibilities within the department. More specifically, users and their permissions should be limited as defined in \autoref{subsec:Users}.
 	
 \itempar Use of existing authentication mechanisms\\
@@ -206,12 +216,12 @@ Highest Priority: Should Have\\
 	Admin users should be notified when the distribution of a user's time between Teaching, Research, and Administrative tasks exceeds acceptable limits. For example, if a user spends a disproportionate amount of time on Research tasks compared to teaching and administration.
 
 \itempar \label{freq:PercentageCondition}Reporting under-assigned tasks\\
-	\textul{Priority: Should Have}
+	\textul{Priority: Should Have}\\
 	Admin users should be notified when the total percentage contribution of users to a given task does not equal 100\%.
 	
 \itempar Suppression of notifications\\
 	\textul{Priority: Could Have}\\
-	Users could have the ability to suppress notifications such that ongoing situations, or exceptions to the established rules, do not dilute the value of the notifications overall. An excessive number of notifications could cause users to disregard all notifications. Conversely users may forget and fail to deal with situations after suppressing notifications(s). As such, the extent to which notifications can be suppressed, if at all, must be decided through experimentation and consequently out of scope for this document.
+	Users could have the ability to suppress notifications such that ongoing situations, or exceptions to the established rules, do not dilute the value of the notifications overall. An excessive number of notifications could cause users to disregard all notifications. Conversely users may forget and fail to deal with situations after suppressing notifications(s). As such, the extent to which notifications can be suppressed, if at all, must be decided through experimentation and consequently is out of scope for this document.
 
 \end{enumerate}
 
@@ -243,9 +253,11 @@ Highest Priority: Should Have\\
 
 \itempar Academic date system\\
 \underline{\smash{Priority: Should Have}}\\
+The date system used within WMS should be based upon the academic year, rather than the calendar (or any other) year system.
 
-The date system used within WMS should be based upon the academic year, rather than the calender (or any other) year system.
-
+\itempar \label{nfreq:Browsers} Supported browsers\\
+    \textul{Priority: Must Have}\\
+    The system must be accessible and functional for end users using either Google Chrome or Mozilla Firefox. Other browsers may work, but are not explicitly supported.
 
 \end{enumerate}
 
@@ -254,6 +266,7 @@ The date system used within WMS should be based upon the academic year, rather t
 
 The risks identified in this section should be quantified with respect to the following impact matrix:
 
+\begin{table}[H]
 \begin{tabulary}{\textwidth}{l|l|l|l|l|l}
 	 &\multicolumn{5}{c}{Consequence}\\ \cmidrule{2-6}
 	Likelihood & Trivial & Minor & Moderate & Major & Severe \\ \midrule
@@ -262,9 +275,10 @@ The risks identified in this section should be quantified with respect to the fo
 	Possible & Low & Moderate & Moderate & High & Extreme \\
 	Unlikely & Low & Moderate & Moderate & High & High \\
 	Rare & Low & Low & Moderate & Moderate & High \\
-\end{tabulary}\\
+\end{tabulary}
+\end{table}
 
-Extreme risks are those requireing immediate corrective action. High risk issues require some immediate mitigation, and may require investigation leading to additional corrective actions. Moderate risks will benefit from adaptations or adjustments to mitigate consequence or likelihood, but do not require immediate action. Low risk items are either considered acceptable occurances, or can be adaquately dealt with as and when they arise.
+Extreme risks are those requiring immediate corrective action. High risk issues require some immediate mitigation, and may require investigation leading to additional corrective actions. Moderate risks will benefit from adaptations or adjustments to mitigate consequence or likelihood, but do not require immediate action. Low risk items are either considered acceptable occurrences, or can be adequately dealt with as and when they arise.
 
 The following risks have been identified (see next page):
 
@@ -273,15 +287,91 @@ The following risks have been identified (see next page):
 	Risk & Mitigation & Likelihood & Consequences \\\toprule
 	A team member falls ill & Keep group members up to date on current work in progress, and keep this work accessible & Unlikely & Moderate\\
 	Loss of data & Back up work regularly to an external version control server/service. Ensure that there is always at least 2 copies of any data and those copies are not co-located either physically or virtually. & Rare & Major \\
-	Failure to implement main features in time available & Weekly progress meetings with stakeholder(s) to ensure the project is on track. Triaging features if neccessary to ensure a minimum-viable product is delviered & Possible & Moderate \\
+	Failure to implement main features in time available & Weekly progress meetings with stakeholder(s) to ensure the project is on track. Triaging features if necessary to ensure a minimum-viable product is delivered & Possible & Moderate \\
 	Change of requirements & Regular meetings with stakeholder(s) to ensure changes are communicated as early as possible & Likely & Moderate \\
 	Insufficient time for thorough testing & Test software continuously during development as new features are implemented (unit and integration testing) & Possible & Moderate \\
 	Major issue arising after delivery & Extensive acceptance testing by the end users prior to handover, and continuous testing during development & Possible & Major \\
 	UCU members strike & Ensure that all required data is accessible without reliance on members of the UCU. University facilities have been maintained during previous strike action, and with no related teaching being delivered, impact is trivial & Almost Certain & Trivial \\ 
 	Severe weather preventing travel & Ensure mechanisms are in place for communication and data sharing across the internet & Rare & Minor \\
-	Expected hosting environment is insufficient & Develop and continually test the software in the intended hosting environment. Identify early any inadaquacies and discuss resolutions with stakeholder(s) & Rare & Major \\
+	Expected hosting environment is insufficient & Develop and continually test the software in the intended hosting environment. Identify early any inadequacies and discuss resolutions with stakeholder(s) & Rare & Major \\
 
 \end{tabulary}
 
 \end{landscape}
+
+\pagebreak
+\section{Test Plan}
+
+\subsection{Scope}
+\subsubsection{In Scope}
+
+\begin{itemize}
+    \item Unit tests for each new feature that is added.
+    \item Systems and integration test for each new feature.
+    \item Test that the system can function on a range of devices with different resolutions.
+    \item Test the system on various browsers, focusing on those listed in \autoref{nfreq:Browsers}.
+    \item Test the system for basic security flaws such as cross site scripting and SQL injection.
+\end{itemize}
+
+\subsubsection{Out of Scope}
+These features will not be tested due to be out with the requirements of the project.
+
+
+\begin{itemize}
+  \item Stress test. Not necessary as only the MACS department will be using this.
+  \item Advanced security testing, e.g denial of service attacks.
+  \item Performance of the system. This is something that we will be monitoring throughout the implementation but not explicitly testing it.
+\end{itemize}
+
+\subsection{Test Methodology}
+The test methodology that we will be adopting for this project is the agile methodology. We are using agile so that the system can be thoroughly tested throughout the implementation process. Due to only having two people as part of this team we will be carrying out a lot of these tests as we go. Before a new feature is added to the system we will each test it to make sure it doesn't disrupt the flow of the current system. Once we have implemented the entire system we will rerun our test plan over the entire system. During the implementation of the system we will also be conducting code reviews to make sure that the code used in the final system is properly written and commented.
+
+\subsubsection{Test Levels}
+
+\begin{itemize}
+  \item Unit testing: Testing the individual components (e.g. functions, database queries) that comprise the new feature.
+  \item Integration testing: Conducted when a new feature is added to the system to check that the new feature doesn't disrupt the current flow of the system.
+  \item System testing: Conducted on the completed system to check if all of the requirements have been met and there are no major issues with the completed system.
+\end{itemize}
+
+\subsubsection{Bug Triage}
+When there is an issue detected during testing we will add this new issue as a new ticket in GitHub. This ticket should have a sensible title and a complete description of what the problem was and how to recreate it. Tickets will only be raised for issues found in the master branch.
+
+\subsection{Test Deliverables}
+Below is a list of each deliverable that will be provided during each stage of development.
+\subsubsection*{Before Testing}
+\begin{itemize}
+    \item Test plan
+    \item Evaluation strategy
+\end{itemize}
+
+\subsubsection*{During Testing}
+\begin{itemize}
+    \item Test data
+    \item Test scenarios
+\end{itemize}
+
+\subsubsection*{After Testing}
+\begin{itemize}
+    \item Final test results
+    \item Release notes
+\end{itemize}
+
+\section{Evaluation Strategy}
+\subsection{Introduction}
+The point of the evaluation is to get user feedback on the design and the feel of the system. The evaluation will be conducted once near the end of the development process to check with the stakeholder(s) if it is what they envisioned, and that it meets acceptable usability levels.
+
+\subsection{Evaluation Methodology}
+\subsubsection{Aims}
+\begin{itemize}
+    \item Brief each participant
+    \item Gather data on the usability of the product
+    \item Record any critical flaws about the design and functionality of the product that arise 
+    \item Debrief each participant
+\end{itemize}
+\subsubsection{Hypothesis}
+The participant can complete a given scenario with ease and with no help from a third party.
+\subsubsection{Participants}
+The desired participants are those who will, upon completion, be using the system as part of their regular work activities. We aim to have a representative sample of all anticipated users in the MACS department participating.
+
 \end{document}
