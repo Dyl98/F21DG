@@ -2,8 +2,7 @@ language: php
 php:
   - '7.2'  
 
-services:
-  - mysql
-  
-before_script:
-  - mysql -u root --password="" < tests/travis.sql
+before_install:
+  - composer require "codeception/codeception" --dev
+
+script: php vendor/bin/codecept run
