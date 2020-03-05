@@ -1,15 +1,16 @@
-drop table StaffTasks;
-drop table CoTaught;
-drop table ClassificationRoles;
+drop table if exists
+StaffTasks,
+CoTaught,
+ClassificationRoles;
 
-drop table Tasks;
-drop table Staff;
-drop table Roles;
-drop table Dates;
-drop table CourseDetails;
-drop table ResearchDetails;
-drop table Classifications;
-drop table CalendarTranslations;
+drop table if exists Staff;
+drop table if exists Roles;
+drop table if exists Dates;
+drop table if exists CourseDetails;
+drop table if exists ResearchDetails;
+drop table if exists Tasks;
+drop table if exists Classifications;
+drop table if exists CalendarTranslations;
 -- StaffID should ideally be externally defined, rather than auto incremented
 --		Do staff have Matriculation numbers, or similar?
 -- Office should match standard Heriot-Watt room identifiers (IE EMG44, GRGIC2)
@@ -47,7 +48,7 @@ foreign key (RoleID) references Roles (RoleID) on update cascade
 create table Tasks (
 TaskID			int(8) primary key AUTO_INCREMENT,
 Name			varchar(64) not null,
-Description		varchar(256) not null,
+Description		varchar(2048) not null,
 WorkUnits		int(4) not null,
 Classification	int(2) not null,
 foreign key (Classification) references Classifications (ClassificationID) ON UPDATE CASCADE
@@ -69,6 +70,7 @@ foreign key (Classification) references Classifications (ClassificationID) ON UP
 create table Dates (
 TaskID		int(8) not null,
 DateType	int(2) not null,
+RepeatType	int(2) not null,
 TaskDate	DATE not null,
 primary key (TaskID, DateType),
 foreign key (TaskID) references Tasks (TaskID) on update cascade on delete cascade
@@ -105,7 +107,7 @@ INDEX (SecondaryTaskID, PrimaryTaskID)
 
 create table ResearchDetails (
 TaskID			int(8) primary key,
-Funded			int(1) not null,
+Funded			BOOL not null,
 foreign key (TaskID) references Tasks (TaskID) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=INNODB;
 
