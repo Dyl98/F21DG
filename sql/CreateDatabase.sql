@@ -22,17 +22,17 @@ Surname		varchar(32) not null,
 Office 		varchar(8) not null,
 Email		varchar(256) not null,
 PhoneExt	varchar(11) not null,
-Campus		varchar(32) not null,
+Campus		varchar(32) not null
 ) ENGINE=INNODB;
 
 CREATE TABLE Classifications (
 ClassificationID	int(2) primary key,
-Name				varchar(32)
+Name			varchar(32)
 ) ENGINE=INNODB;
 
 create table Roles (
 RoleID		int(2) primary key AUTO_INCREMENT,
-Name		varchar(32),
+Name		varchar(32)
 ) ENGINE=INNODB;
 
 create table ClassificationRoles (
@@ -40,7 +40,7 @@ ClassificationID	int(2) not null,
 RoleID				int(2) not null,
 primary key (ClassificationID, RoleID),
 foreign key (ClassificationID) references Classifications (ClassificationID) on update cascade on delete cascade,
-foreign key (RoleID) references Roles (RoleID) on update cascade,
+foreign key (RoleID) references Roles (RoleID) on update cascade
 ) ENGINE=INNODB;
 
 -- 4 digits for work units should suffice
@@ -82,7 +82,7 @@ WorkloadPercentage	int(3) not null,
 DesignatedRole		int(2),
 primary key (StaffID, TaskID),
 foreign key (StaffID) references Staff (StaffID) ON UPDATE CASCADE,
-FOREIGN KEY (TaskID) references Tasks (TaskID) ON UPDATE CASCADE ON DELETE CASCADE
+FOREIGN KEY (TaskID) references Tasks (TaskID) ON UPDATE CASCADE ON DELETE CASCADE,
 foreign key (DesignatedRole) references Roles (RoleID) on update cascade
 ) ENGINE=INNODB;
 
@@ -117,5 +117,5 @@ Semester1Start		DATE not null,
 Semester2Start		DATE not null,
 Semester3Start		DATE not null,
 ChristmasBreakStart	DATE not null,
-EasterBreakStart	DATE not null,
+EasterBreakStart	DATE not null
 ) ENGINE=INNODB;
