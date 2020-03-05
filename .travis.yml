@@ -1,0 +1,10 @@
+language: php
+php:
+  - '7.2'  
+
+before_install:
+  - composer require codeception/module-phpbrowser --dev
+  - composer require codeception/module-asserts --dev
+  - composer require "codeception/codeception" --dev
+
+script: php vendor/bin/codecept run
