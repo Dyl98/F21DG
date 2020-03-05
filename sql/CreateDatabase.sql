@@ -9,7 +9,7 @@ drop table Dates;
 drop table CourseDetails;
 drop table ResearchDetails;
 drop table Classifications;
-
+drop table CalendarTranslations;
 -- StaffID should ideally be externally defined, rather than auto incremented
 --		Do staff have Matriculation numbers, or similar?
 -- Office should match standard Heriot-Watt room identifiers (IE EMG44, GRGIC2)
@@ -53,15 +53,27 @@ Classification	int(2) not null,
 foreign key (Classification) references Classifications (ClassificationID) ON UPDATE CASCADE
 ) ENGINE=INNODB;
 
+-- Year is the start year of the academic year
+-- EG Academic year 2020 - 2021 is stored as year 2020
+--create table AcademicDates (
+--TaskID		int(8) not null,
+--DateType	int(2) not null,
+--Year		int(4) not null,
+--Semester	int(1) not null,
+--Week		int(2) not null,
+--DayOfWeek	int(1) not null DEFAULT 1,
+--primary key (TaskID, DateType),
+--foreign key (TaskID) references Tasks (TaskID) on update cascade on delete cascade
+--) ENGINE=INNODB;
+
 create table Dates (
 TaskID		int(8) not null,
 DateType	int(2) not null,
-Semester	int(1) not null,
-Week		int(2) not null,
-DayOfWeek	int(1) not null DEFAULT 1,
+TaskDate	DATE not null,
 primary key (TaskID, DateType),
 foreign key (TaskID) references Tasks (TaskID) on update cascade on delete cascade
 ) ENGINE=INNODB;
+
 
 create table StaffTasks (
 StaffID				int(8) not null,
@@ -97,3 +109,13 @@ Funded			int(1) not null,
 foreign key (TaskID) references Tasks (TaskID) ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=INNODB;
 
+--Year here should be the start of the academic year
+-- IE Year 2020/2021 stored as 2020
+create table CalendarTranslations (
+Year			int(4) primary key,
+Semester1Start		DATE not null,
+Semester2Start		DATE not null,
+Semester3Start		DATE not null,
+ChristmasBreakStart	DATE not null,
+EasterBreakStart	DATE not null,
+) ENGINE=INNODB;
