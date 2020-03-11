@@ -1,0 +1,26 @@
+Will administrative staff need a login -- IE will staff require access who have no tasks assigned to them in the system?
+Will staff who do not have a MACS departmental login (different from the university-wide login used for email etc) require access? -- This will require us to store passwords and limit usefulness of LDAP
+
+What meta-data, if any, should be recorded for staff members? (eg email, room number, campus, website, hair colour)
+
+Would you prefer to organise tasks by date (DD/MM/YYYY) or by term (Semester 1; Christmas break; Semester 2; etc)?
+Should tasks be able to repeat -- if so, in what ways (Annually, Bi-Annually, Weekly etc)?
+Should the system support historical data?
+
+
+What types of task should be recorded?
+	How granular should the data be -- EG specific 'task-type' for Research Grants vs other Research duties?
+		Should these be recorded in a hierarchy?
+	How should tasks be grouped (Ie what task-types will we have)?
+		Could a given task (eg F29LP) fall under multiple goups? eg both administrative (marking) and teaching (lecturing)?
+	Can a given task comprise of multiple sub-tasks (potentially of different task-types)?
+		Should sub-tasks be able to have different start and end dates, within the confines of the top-level task?
+	What data should be recorded for a task?
+		What sort of meta-data should be (uniquely) recorded for specific task types -- For example details of the funding source for research grants?
+
+
+What user stories are there? What do you want to be able to do.
+
+
+
+Do we want to colour code task types? If so, should we store this display data in the DB (probably)

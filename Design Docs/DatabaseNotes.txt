@@ -1,0 +1,17 @@
+The database should use unicode (duh)
+
+Is there an existing staff database we can use?
+
+Should the primary key for the staff members table be their MACS username (if using LDAP)?
+
+If staff members are assigned to a sub-task, the application must ensure that the total workload percentage equals 100% for all tasks in the sub- and super-trees
+	IE If a new staff member is assigned to a sub task, the super task percentage attribution must change to support this.
+	Application could force percentages to be added only to concrete sub-tasks or auto-update percentages with changes. The former is *somewhat* neater for the DB as it reduces the amount of (redundant) data being stored that could instead be calculated as needed.
+	
+Should the start/end date of a super task contrain sub-tasks, or should the super-dates be derived from the sub-dates?
+
+If the task can repeat, should the end-date define when it stops repeating, or should it be ignored in such a case?
+
+Should server have a log file, to record which users changed what?
+
+Should we support having a workload percentage of 0, to record users who have a stake in a task (or are 'task-owners') but don't actually contribute work? Should this be modelled separately?

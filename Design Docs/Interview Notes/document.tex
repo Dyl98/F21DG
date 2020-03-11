@@ -1,0 +1,91 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{enumitem} %Used for modifing the labels used for items in lists.
+
+\begin{document}
+
+\title{Notes on Interview with Professor Andrew Ireland}
+\author{Tommy Lamb}
+\date{20/01/2020}
+
+\maketitle
+
+
+\section{Organistation of Tasks}
+\begin{itemize}
+\item Tasks should be organised by date; preferably in the academic year, as opposed to the calendar year.
+\item Ongoing tasks (IE those without any known end-date) should be supported by the system. Many tasks are of this type, with the notable exception of major roles within the department (eg head of school).
+\item Tasks with a fixed duration should be able to automatically repeat (e.g. Annually)
+\item Tasks which are not fully allocated (IE the total percentage contribution of staff allocated to the task is less than 100\%) should be red-flagged, but permitted in the system.
+
+\item The following types of task were identified:
+\begin{itemize}
+\item Teaching
+\item Research
+\item Administrative
+\item External Activities
+\item Authorised absence (this is potentially sensitive information, and its precise representation, name, and usage (if any) are as yet undecided).
+\end{itemize}
+\item Task classification should be specific and simple, with a limited number of options to enforce unity and avoid user error/confusion.
+
+\item Interested in grouping tasks into a hierarchy, however seems a low-priority. (Database should be designed to support it in principle, even if not fully realised by the application)
+
+
+\end{itemize}
+
+\section{Organisation of Staff}
+\begin{itemize}
+\item Staff members should, if possible, be able to log in user their existing MACS department details.
+\item Staff should have different privilege levels
+\item For any member of staff the following should be recorded:
+\begin{itemize}
+\item Name
+\item Office Number
+\item Email address
+\item Telephone extension number
+\item Campus
+\end{itemize}
+\item Staff may be grouped (e.g. by department, school, etc)
+\end{itemize}
+
+\section{Teaching Tasks}
+\begin{itemize}
+\item A teaching task corresponds (in the general case at least) to a specific course within a degree programme (or programmes). For example, Language Processors (F29LP).
+\item For any teaching task, the following should be recorded in addition to standard task details:
+\begin{itemize}
+\item Course Code
+\item Course Co-ordinator (the single member of staff principally responsible for delivering the course).
+\item Number of students participating in the course
+\end{itemize}
+\end{itemize}
+
+\section{Research Tasks}
+\begin{itemize}
+\item   For any teaching task, the following should be recorded in addition to standard task details:
+\begin{itemize}
+\item State of funding (Funded or unfunded)
+\item Principle Investigator
+\end{itemize}
+\end{itemize}
+
+\section{System Reporting}
+\begin{itemize}
+\item Users should be made aware of tasks which are nearing completion. Clarification required on which specific task types this should be applied to.
+\item Admin-privileged users should be made aware of staff members whose current or future workload meets any of the following criteria:
+\begin{itemize}
+\item Outwith the average departmental (or school?) workload and outwith acceptable variance
+\item Outwith the predefined acceptable distribution of task-types
+\end{itemize}
+
+\item Warnings should be able to be suppressed, or the underlying triggering condition modified on a per-staff-member basis. There are likely to be staff members who are the exception to the rule.
+\end{itemize}
+
+\section{Planning View}
+Admin-privileged users should have access to a 'planning' view, whereby existing and future tasks can be assigned to staff members, but without appearing or modifying the main 'management' view. This is to allow allocations to be created, tested, and revised for the next academic year using the analysis and reporting functions of the system.
+
+There should be functionality to automatically replicate the current allocations in the planning view.
+
+\end{document}
