@@ -1,8 +1,8 @@
---Predetermined Data
+-- Predetermined Data
 
 DELETE FROM Roles;
 
-INSERT into Roles VALUES 
+INSERT INTO Roles VALUES
 (1,"Course Co-ordinator"),
 (2,"Principal Investigator"),
 (3,"Primary Supervisor"),
@@ -10,9 +10,9 @@ INSERT into Roles VALUES
 (5,"Group Supervisor"),
 (6,"Teaching Assistant");
 
-DELETE FROM Clasifications;
+DELETE FROM Classifications;
 
-INSERT into Classifications VALUES
+INSERT INTO Classifications VALUES
 (1, "Teaching"),
 (2, "Research"),
 (3, "Administrative"),
@@ -22,18 +22,18 @@ INSERT into Classifications VALUES
 
 DELETE FROM ClassificationRoles;
 
-INSERT into ClassificationRoles VALUES
+INSERT INTO ClassificationRoles VALUES
 (1,1),
 (2,2);
 
---Sample data
+-- Sample data
 
-Insert into Staff VALUES
+INSERT INTO Staff VALUES
 (1, "Dr.", "No", "EMG57", "Dr.No@hw.ac.uk", "+007", "Edinburgh"),
 (2, "Ernst Stavro", "Blofeld", "MBG13", "esb2@hw.ac.uk", "003", "Edinburgh"),
 (3, "Elliot", "Carver", "GRGIC2", "elliot.carver@hw.ac.uk", "+009", "Dubai");
 
-Insert into Tasks VALUES
+INSERT INTO Tasks VALUES
 (1, "Kill James Bond", "A convoluted description for a convoluted, doomed-to-failure plan", 100, 4),
 (2, "Radio-control of remote rockets", "Investigation into the use of radio-control to assume control of hostile remote rockets. Funded by Spectre.", 20, 2),
 (3, "Find secluded private island", "Have to find a sufficiently secluded private island for a base of operations", 2,3),
@@ -44,11 +44,11 @@ Insert into Tasks VALUES
 (8, "Paternity/Maternity Leave", "", 40, 5),
 (9, "Technical Consultant for Spectre", "", 30, 6);
 
-insert into CourseDetails VALUES
+INSERT INTO CourseDetails VALUES
 (4, "B81PS", "Profesional and Industrial Studies", 100),
 (5, "F29BD", "Big Data Management", 160);
 
-insert into ResearchDetails VALUES
+INSERT INTO ResearchDetails VALUES
 (2, TRUE);
 
 -- Date:
@@ -56,13 +56,13 @@ insert into ResearchDetails VALUES
 -- Type 2 End
 -- Type 3 Start-and-end (one day long)
 
---Repeat:
+-- Repeat:
 -- Type 0 N/A
 -- Type 1 Annual
 -- Type 2 Monthly
 -- Type 3 Weekly
 -- Type 4 Semesterly
-insert into Dates VALUES
+INSERT INTO Dates VALUES
 (1,1,0, "2020/3/5"),
 (2,1,0,"2020/3/1"),
 (2,2,0,"2020/3/1"),
@@ -78,7 +78,7 @@ insert into Dates VALUES
 (9,1,4, "2020/1/13"),
 (9,2,4, "2020/1/20");
 
-insert into StaffTasks VALUES
+INSERT INTO StaffTasks VALUES
 (1,1,34,NULL),
 (2,1,33,NULL),
 (3,1,33,NULL),
