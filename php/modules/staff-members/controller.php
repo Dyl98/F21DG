@@ -9,7 +9,7 @@
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new CMySQL();
 		$staff_members = $sql_connection->get_data("SELECT * FROM staff_members ORDER BY forename ASC");
-		
+
 		/* Loop and display query results */
 		foreach($staff_members as $staff_member){
 ?>
@@ -33,7 +33,7 @@
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new CMySQL();
 		$staff_members = $sql_connection->get_data("SELECT * FROM staff_members WHERE availability".$period." = 1 ORDER BY forename ASC");
-		
+
 		/* Loop and display query results */
 		foreach($staff_members as $staff_member){
 ?>
@@ -65,7 +65,7 @@
 			<input name="surname" class="form-field" type="text" size="25" value="" />
 			<br />
 			<br />
-			<label class="form-label">E-Mail: </label>		
+			<label class="form-label">E-Mail: </label>
 			<input name="email" class="form-field" type="text" size="25" value="" />
 			<br />
 			<br />
@@ -93,7 +93,7 @@
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new CMySQL();
 		$staff_members = $sql_connection->get_data("SELECT * FROM staff_members WHERE staffid=".$staffid." ORDER BY forename ASC");
-		
+
 		/* Loop and display query results */
 		foreach($staff_members as $staff_member){
 ?>
@@ -108,7 +108,7 @@
 				<input name="surname" class="form-field" type="text" size="25" value="<?php echo $staff_member["surname"]; ?>" />
 				<br />
 				<br />
-				<label class="form-label">E-Mail: </label>		
+				<label class="form-label">E-Mail: </label>
 				<input name="email" class="form-field" type="text" size="25" value="<?php echo $staff_member["email"]; ?>" />
 				<br />
 				<br />
@@ -174,7 +174,7 @@
 			</select>
 			<br />
 			<br />
-			<label class="form-label">Percentage Taken: </label>		
+			<label class="form-label">Percentage Taken: </label>
 			<select name="percentage" class="form-field">
 			<?php for($counter = 1; $counter < 101; $counter++){ ?>
 				<option><?php echo $counter; ?></option>
@@ -202,17 +202,17 @@
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new CMySQL();
 		$current_modules = $sql_connection->get_data("SELECT current_modules_xref.staffid, current_modules_xref.moduleid, current_modules_xref.percentage, current_modules.moduleid, current_modules.code, current_modules.name FROM current_modules_xref, current_modules WHERE (current_modules_xref.staffid = \"".$staffid."\") AND (current_modules_xref.moduleid = current_modules.moduleid) ORDER BY name ASC");
-		
+
 		/* Loop and display query results */
 		foreach($current_modules as $current_module){
 ?>
 			<div id="<?php echo $current_module["moduleid"]; ?>" class="row-entry"><!-- Row entry for module -->
-				
+
 					<span class="module-row-code"><?php if($current_module["code"]!="") {echo $current_module["code"];} else { echo "Code not entered"; } ?></span>
 					<span class="module-row-name"><?php if($current_module["name"]!="") {echo $current_module["name"];} else { echo "Module name not entered"; } ?></span>
 					<span class="module-row-weighting"><?php echo $current_module["percentage"]."&#37;"; ?></span>
 					<span class="row-link row-link-red"><a href="remove-current-modules-xref.php?staffid=<?php echo $staffid; ?>&moduleid=<?php echo $current_module["moduleid"]; ?>">Unassign</a></span>
-				
+
 			</div>
 <?php
 		}
@@ -259,7 +259,7 @@
 			</select>
 			<br />
 			<br />
-			<label class="form-label">Percentage Taken: </label>		
+			<label class="form-label">Percentage Taken: </label>
 			<select name="percentage" class="form-field">
 			<?php for($counter = 1; $counter < 101; $counter++){ ?>
 				<option><?php echo $counter; ?></option>
@@ -287,31 +287,20 @@
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new CMySQL();
 		$admin_tasks = $sql_connection->get_data("SELECT admin_tasks_xref.staffid, admin_tasks_xref.adminid, admin_tasks_xref.percentage, admin_tasks.adminid, admin_tasks.name, admin_tasks.description FROM admin_tasks_xref, admin_tasks WHERE (admin_tasks_xref.staffid = \"".$staffid."\") AND (admin_tasks_xref.adminid = admin_tasks.adminid) ORDER BY name ASC");
-		
+
 		/* Loop and display query results */
 		foreach($admin_tasks as $admin_task){
 ?>
 			<div id="<?php echo $admin_task["adminid"]; ?>" class="row-entry"><!-- Row entry for admin task -->
-				
+
 					<span class="admin-row-name"><?php if($admin_task["name"]!="") {echo $admin_task["name"];} else { echo "Name not entered"; } ?></span>
 					<span class="admin-row-description"><?php if($admin_task["description"]!="") {echo $admin_task["description"];} else { echo "Description not entered"; } ?></span>
 					<span class="admin-row-weighting"><?php echo $admin_task["percentage"]."&#37;"; ?></span>
 					<span class="row-link row-link-red"><a href="remove-admin-tasks-xref.php?staffid=<?php echo $staffid; ?>&adminid=<?php echo $admin_task["adminid"]; ?>">Unassign</a></span>
-				
+
 			</div>
 <?php
 		}
-		return;
-	}
-?>
-
-
-<?php
-	function remove_admin_task_xref($staffid,$adminid) {
-		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$sql_connection->add_query("DELETE FROM admin_tasks_xref WHERE (staffid = ".$staffid.") AND (adminid = ".$adminid.")");
-		$result = $sql_connection->query();
 		return;
 	}
 ?>
@@ -344,7 +333,7 @@
 			</select>
 			<br />
 			<br />
-			<label class="form-label">Percentage Taken: </label>		
+			<label class="form-label">Percentage Taken: </label>
 			<select name="percentage" class="form-field">
 			<?php for($counter = 1; $counter < 101; $counter++){ ?>
 				<option><?php echo $counter; ?></option>
@@ -372,18 +361,18 @@
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new CMySQL();
 		$research_duties = $sql_connection->get_data("SELECT research_duties_xref.staffid, research_duties_xref.researchid, research_duties_xref.percentage, research_duties.researchid, research_duties.name, research_duties.researchtype, research_duties.description FROM research_duties_xref, research_duties WHERE (research_duties_xref.staffid = \"".$staffid."\") AND (research_duties_xref.researchid = research_duties.researchid) ORDER BY name ASC");
-		
+
 		/* Loop and display query results */
 		foreach($research_duties as $research_duty){
 ?>
 			<div id="<?php echo $research_duty["researchid"]; ?>" class="row-entry"><!-- Row entry research duty -->
-				
+
 					<span class="research-row-name"><?php if($research_duty["name"]!="") {echo $research_duty["name"];} else { echo "Name not entered"; } ?></span>
 					<span class="research-row-type"><?php if($research_duty["researchtype"]!="") {echo $research_duty["researchtype"];} else { echo "Type not entered"; } ?></span>
 					<span class="research-row-description"><?php if($research_duty["description"]!="") {echo $research_duty["description"];} else { echo "Description not entered"; } ?></span>
 					<span class="research-row-weighting"><?php echo $research_duty["percentage"]; ?></span>
 					<span class="row-link row-link-red"><a href="remove-research-duties-xref.php?staffid=<?php echo $staffid; ?>&researchid=<?php echo $research_duty["researchid"]; ?>">Unassign</a></span>
-				
+
 			</div>
 <?php
 		}

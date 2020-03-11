@@ -1,23 +1,23 @@
 <?php
 	require_once('../../core/engine.php');
-        include_once('../../core/protect.php');
+	include_once('../../core/protect.php');
 ?>
 
-
+<!-- TODO update form element size fields to match the Database schema -->
 <?php
 	function show_admin_tasks() {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new CMySQL();
-		$admin_tasks = $sql_connection->get_data("SELECT * FROM admin_tasks ORDER BY name ASC");
-		
+		$admin_tasks = $sql_connection->get_data("SELECT * FROM Tasks AS T WHERE NOT EXISTS (SELECT TaskID FROM CourseDetails WHERE TaskID = ST.TaskID) AND NOT EXISTS (SELECT TaskID FROM ResearchDetails where TaskID = ST.TaskID) ORDER BY T.Name ASC");
+
 		/* Loop and display query results */
 		foreach($admin_tasks as $admin_task){
 ?>
-			<div id="<?php echo $admin_task["adminid"]; ?>" class="row-entry"><!-- Row entry for admin task -->
-				<a href="edit.php?id=<?php echo $admin_task["adminid"]; ?>">
-					<span class="admin-row-name"><?php if($admin_task["name"]!="") {echo $admin_task["name"];} else { echo "Name not entered"; } ?></span>
-					<span class="admin-row-description"><?php if($admin_task["description"]!="") {echo $admin_task["description"];} else { echo "Description not entered"; } ?></span>
-					<span class="admin-row-weighting"><?php echo $admin_task["weighting"]; ?></span>
+			<div id="<?php echo $admin_task["TaskID"]; ?>" class="row-entry"><!-- Row entry for admin task -->
+				<a href="edit.php?id=<?php echo $admin_task["TaskID"]; ?>">
+					<span class="admin-row-name"><?php if($admin_task["Name"]!="") {echo $admin_task["Name"];} else { echo "Name not entered"; } ?></span>
+					<span class="admin-row-description"><?php if($admin_task["Description"]!="") {echo $admin_task["Description"];} else { echo "Description not entered"; } ?></span>
+					<span class="admin-row-weighting"><?php echo $admin_task["WorkUnits"]; ?></span>
 					<span class="row-link">More</span>
 				</a>
 			</div>
@@ -28,12 +28,12 @@
 ?>
 
 
-<?php
+<?php //TODO make this work with new date system
 	function show_admin_tasks_filtered($period) {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new CMySQL();
 		$admin_tasks = $sql_connection->get_data("SELECT * FROM admin_tasks WHERE availability".$period." = 1 ORDER BY name ASC");
-		
+
 		/* Loop and display query results */
 		foreach($admin_tasks as $admin_task){
 ?>
@@ -52,7 +52,7 @@
 ?>
 
 
-<?php
+<?php //TODO This form can be generalised to any generic task by letting the user select the classification manually. Additional fields would need to be dynamically added for Research and Teaching tasks
 	function add_admin_task() {
 ?>
 		<!-- Send form contents to add-form.php -->
@@ -65,15 +65,11 @@
 			<input name="description" class="form-field" type="text" size="50" value="" />
 			<br />
 			<br />
-			<label class="form-label">Weighting: </label>		
-			<select name="weighting" class="form-field">
-				<?php for($counter = 1; $counter < 11; $counter++){ ?>
-					<option><?php echo $counter; ?></option>
-				<?php } ?>
-				</select>
+			<label class="form-label">Units of Work: </label>
+			<input name="workUnits" class="form-field" type="text" inputmode="numeric" pattern = "^[1-9][0-9]*$"/>
 			<br />
 			<br />
-			<label class="form-label">Availability: </label>
+			<label class="form-label">Availability: </label><!-- TODO Update this for new date system -->
 			<span class="checkbox">
 				<input type="checkbox" name="availability1" value="1" />1st Semester&nbsp;
 				<input type="checkbox" name="availability2" value="1" />Christmas&nbsp;
@@ -95,31 +91,28 @@
 <?php
 	function edit_admin_task($adminid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$admin_tasks = $sql_connection->get_data("SELECT * FROM admin_tasks WHERE adminid=".$adminid." ORDER BY name ASC");
-		
+
+		$admin_tasks = get_admin_info($adminid);
+
 		/* Loop and display query results */
 		foreach($admin_tasks as $admin_task){
 ?>
 			<!-- Send form contents to edit-form.php -->
 			<form id="edit-admin-task" class="form" method="post" action="edit-form.php">
-				<input type="hidden" name="adminid" value="<?php echo $admin_task["adminid"]; ?>" />
+				<input type="hidden" name="TaskID" value="<?php echo $admin_task["TaskID"]; ?>" />
 				<label class="form-label">Name: </label>
-				<input name="name" class="form-field" type="text" size="50" value="<?php echo $admin_task["name"]; ?>" />
+				<input name="name" class="form-field" type="text" size="50" value="<?php echo $admin_task["Name"]; ?>" />
 				<br />
 				<br />
 				<label class="form-label">Description: </label>
-				<input name="description" class="form-field" type="text" size="50" value="<?php echo $admin_task["description"]; ?>" />
+				<input name="description" class="form-field" type="text" size="50" value="<?php echo $admin_task["Description"]; ?>" />
 				<br />
 				<br />
-				<label class="form-label">Weighting: </label>		
-				<select name="weighting" class="form-field">
-				<?php for($counter = 1; $counter < 11; $counter++){ ?>
-					<option<?php if($admin_task["weighting"] == $counter) { echo " selected=\"selected\""; } ?>><?php echo $counter; ?></option>
-				<?php } ?>
-				</select>
+				<label class="form-label">Weighting: </label>
+				<input name="workUnits" class="form-field" type="text" inputmode="numeric" pattern = "^[1-9][0-9]*$"/>
 				<br />
 				<br />
+				<!-- TODO update for dates -->
 				<label class="form-label">Availability: </label>
 				<span class="checkbox">
 					<input type="checkbox" name="availability1" value="1"<?php if($admin_task["availability1"] == 1) echo " checked=\"checked\""; ?> />1st Semester&nbsp;
@@ -140,34 +133,21 @@
 	}
 ?>
 
-
-<?php
-	function remove_admin_task($adminid) {
-		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$sql_connection->add_query("DELETE FROM admin_tasks WHERE adminid = ".$adminid);
-		$sql_connection->add_query("DELETE FROM admin_tasks_xref WHERE adminid = ".$adminid);
-		$result = $sql_connection->query();
-		return;
-	}
-?>
-
-
-<?php
+<?php // This function appears to be the UI for adding a staff member to a task.
 	function add_admin_task_xref($adminid) {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new CMySQL();
-		$staff_members = $sql_connection->get_data("SELECT DISTINCT * FROM staff_members WHERE (staff_members.staffid) NOT IN ( SELECT admin_tasks_xref.staffid FROM admin_tasks_xref WHERE admin_tasks_xref.adminid = ".$adminid.") ORDER BY forename ASC");
-		$all_percentages = $sql_connection->get_data("SELECT * FROM admin_tasks_xref WHERE admin_tasks_xref.adminid = ".$adminid);
+		$staff_members = $sql_connection->get_data("SELECT DISTINCT * FROM Staff WHERE (Staff.StaffID) NOT IN ( SELECT StaffID FROM StaffTasks WHERE TaskID = ".$adminid.") ORDER BY forename ASC");
+		$all_percentages = $sql_connection->get_data("SELECT * FROM StaffTasks WHERE TaskID = ".$adminid);
 		foreach($all_percentages as $all_percentage){
-			$total_percentage += $all_percentage["percentage"];
+			$total_percentage += $all_percentage["WorkloadPercentage"];
 		}
 
 		if((count($staff_members) > 0) && ($total_percentage < 100)) {
 ?>
 		<!-- Send form contents to add-form-xref.php -->
 		<form id="add-admin-task-xref" class="form" method="post" action="add-form-xref.php?adminid=<?php echo $adminid; ?>">
-			<input type="hidden" name="adminid" value="<?php echo $adminid; ?>" />
+			<input type="hidden" name="TaskID" value="<?php echo $adminid; ?>" />
 			<label class="form-label">Staff Member: </label>
 			<select name="staffid" class="form-field">
 <?php
@@ -177,21 +157,21 @@
 				foreach($staff_members as $staff_member){
 					if ($counter == 0)
 					{
-						$current_letter = substr($staff_member["forename"],0,1);
+						$current_letter = substr($staff_member["Forename"],0,1);
 						echo '<optgroup class="listgroup" label="'.$current_letter.'">';
 					}
 
-					if (substr($staff_member["forename"],0,1) != $current_letter)
+					if (substr($staff_member["Forename"],0,1) != $current_letter)
 					{
 						echo '</optgroup>';
-						$current_letter = substr($staff_member["forename"],0,1);
+						$current_letter = substr($staff_member["Forename"],0,1);
 						echo '<optgroup class="listgroup" label="'.$current_letter.'">';
 					}
 ?>
-					<option class="listcolor<?php echo $i; ?>" value="<?php echo $staff_member["staffid"]; ?>">
-						<?php if($staff_member["forename"]!="" && $staff_member["surname"]!="") {echo $staff_member["forename"]."&nbsp;".$staff_member["surname"];} else { echo "Full name not entered"; } ?>
+					<option class="listcolor<?php echo $i; ?>" value="<?php echo $staff_member["StaffID"]; ?>">
+						<?php if($staff_member["Forename"]!="" && $staff_member["Surname"]!="") {echo $staff_member["Forename"]."&nbsp;".$staff_member["Surname"];} else { echo "Full name not entered"; } ?>
 						&nbsp;-&nbsp;
-						<?php if($staff_member["email"]!="") {echo $staff_member["email"];} else { echo "E-Mail not entered"; } ?>
+						<?php if($staff_member["Email"]!="") {echo $staff_member["Email"];} else { echo "E-Mail not entered"; } ?>
 					</option>
 					<?php $i = -($i - 1);
 					$counter = $counter +1;
@@ -200,7 +180,7 @@
 			</select>
 			<br />
 			<br />
-			<label class="form-label">Percentage Taken: </label>		
+			<label class="form-label">Percentage Taken: </label>
 			<select name="percentage" class="form-field">
 			<?php for($counter = 1; $counter < 101; $counter++){ ?>
 				<?php if ($counter == (101 - $total_percentage)) break; ?>
@@ -226,20 +206,19 @@
 <?php
 	function view_admin_task_xref($adminid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$staff_members = $sql_connection->get_data("SELECT admin_tasks_xref.staffid, admin_tasks_xref.adminid, admin_tasks_xref.percentage, staff_members.staffid, staff_members.forename, staff_members.surname, staff_members.email FROM admin_tasks_xref, staff_members WHERE (admin_tasks_xref.adminid = \"".$adminid."\") AND (admin_tasks_xref.staffid = staff_members.staffid) ORDER BY forename ASC");
-		
+		$staff_members = get_staff_by_task($adminid);
+
 		/* Loop and display query results */
 		$counter = 0;
 		foreach($staff_members as $staff_member){
 ?>
-			<div id="<?php echo $staff_member["staffid"]; ?>" class="row-entry"><!-- Row entry for assigned staff member -->
-				
-					<span class="staff-row-name"><?php if($staff_member["forename"]!="" && $staff_member["surname"]!="") {echo $staff_member["forename"]."&nbsp;".$staff_member["surname"];} else { echo "Full name not entered"; } ?></span>
-					<span class="staff-row-email"><?php if($staff_member["email"]!="") {echo $staff_member["email"];} else { echo "E-Mail not entered"; } ?></span>
-					<span class="staff-row-workload"><?php echo $staff_member["percentage"]."&#37;" ?></span>
-					<span class="row-link row-link-red"><a href="remove-xref.php?staffid=<?php echo $staff_member["staffid"]; ?>&adminid=<?php echo $adminid; ?>">Unassign</a></span>
-				
+			<div id="<?php echo $staff_member["StaffID"]; ?>" class="row-entry"><!-- Row entry for assigned staff member -->
+
+					<span class="staff-row-name"><?php if($staff_member["Forename"]!="" && $staff_member["Surname"]!="") {echo $staff_member["Forename"]."&nbsp;".$staff_member["Surname"];} else { echo "Full name not entered"; } ?></span>
+					<span class="staff-row-email"><?php if($staff_member["Email"]!="") {echo $staff_member["Email"];} else { echo "E-Mail not entered"; } ?></span>
+					<span class="staff-row-workload"><?php echo $staff_member["WorkloadPercentage"]."&#37;" ?></span>
+					<span class="row-link row-link-red"><a href="remove-xref.php?staffid=<?php echo $staff_member["StaffID"]; ?>&adminid=<?php echo $adminid; ?>">Unassign</a></span>
+
 			</div>
 			<?php $counter = $counter +1;
 		}
@@ -247,25 +226,3 @@
 		return;
 	}
 ?>
-
-
-<?php
-	function remove_admin_task_xref($staffid,$adminid) {
-		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$sql_connection->add_query("DELETE FROM admin_tasks_xref WHERE (staffid = ".$staffid.") AND (adminid = ".$adminid.")");
-		$result = $sql_connection->query();
-		return;
-	}
-?>
-
-<?php
-        function get_admin_task_infos($adminid)
-        {
-                $sql_connection = new CMySQL();
-                $infos = $sql_connection->get_data("SELECT * FROM admin_tasks WHERE adminid = ".$adminid.";");
-
-                return $infos;
-        }
-?>
-

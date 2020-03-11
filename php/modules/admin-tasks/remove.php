@@ -1,11 +1,12 @@
 <?php
 	include_once('../../core/protect.php');
-	include_once('controller.php');
-	
+	include_once('../../core/engine.php');
+	include_once('controller.php'); //TODO is this actually needed?
+
 	if (isset($_POST['id2delete'])) {
-		/* Call function from controller.php and pass id variable */
-		remove_admin_task($_POST['id2delete']);
-		
+		/* Call function from engine.php and pass id variable */
+		delete_task($_POST['id2delete']);
+
 		/* On succesful transaction, attempt to redirect to main page */
 		echo "
 			<script language=javascript>
@@ -32,7 +33,7 @@
 		</ul>
 	</div>
 	<div id="timebar">
-		
+
 	</div>
 	<div id="content"><!-- Main content area where all information is displayed -->
 		<div class="column-headers"><!-- Column headers -->
@@ -60,12 +61,12 @@
 				<br />
 				<?php
 					$staff = get_staff_by_admin($_GET["id"]);
-					
+
 					$counter = 0;
 					echo "<h2>Assigned staff members:</h2>";
 						foreach($staff as $staff_single) {
-						$counter++;					
-						echo "<h3><a href=\"../staff-members/edit.php?id=".$staff_single['staffid']."\">".$staff_single['forename']." ".$staff_single['surname']."</a></h3>";
+						$counter++;
+						echo "<h3><a href=\"../staff-members/edit.php?id=".$staff_single['StaffID']."\">".$staff_single['Forename']." ".$staff_single['Surname']."</a></h3>";
 					}
 					if ($counter == 0) { echo "<h3>(No staff members assigned to this admin task)</h3>"; }
 				?>

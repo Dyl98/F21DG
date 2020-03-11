@@ -1,16 +1,16 @@
 <?php
 	require_once('../../core/engine.php');
         include_once('../../core/protect.php');
-	
+
 	/* If file is being called from form, insert new data into database */
 	if($_POST){
 		$sql_connection = new CMySQL();
-		$sql_connection->add_query("INSERT INTO admin_tasks_xref VALUES ('".$_POST['staffid']."','".$_POST['adminid']."','".$_POST['percentage']."');");
+		$sql_connection->add_query("INSERT INTO StaffTasks (StaffID, TaskID, WorkloadPercentage) VALUES ('".$_POST['staffid']."','".$_POST['adminid']."','".$_POST['percentage']."');");
 		$result = $sql_connection->query();
-		
+
 		/* Notify affected staff members */
 		notify_task($_POST['staffid'],$_POST['adminid'],"ASSIGNING:  ".$_POST['percentage']."% of ");
-		
+
 		if($result[0] != 1){
 			echo "Error, " . $result[0];
 		}else{
