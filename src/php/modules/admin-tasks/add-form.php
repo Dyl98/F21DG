@@ -7,7 +7,7 @@
 	
 	/* If file is being called from form, insert new data into database */
 	if($_POST){
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		$sql_connection->add_query("INSERT INTO admin_tasks VALUES ('','".strip_tags($_POST['name'])."','".strip_tags($_POST['description'])."','".$_POST['weighting']."','".$_POST['availability1']."','".$_POST['availability2']."','".$_POST['availability3']."','".$_POST['availability4']."','".$_POST['availability5']."');");
 		$result = $sql_connection->query();
 		

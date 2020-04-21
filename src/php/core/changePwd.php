@@ -12,14 +12,14 @@
 		{
 			if (($_POST['new_pwd']) == ($_POST['confirm_pwd']) )
 			{
-				$sql_connection = new CMySQL();
-		                $res = $sql_connection->get_data("SELECT users.userpassword as pwd FROM users WHERE users.userid = '".$_SESSION['userid']."';");
+				$sql_connection = new mySQLi_helper();
+		                $res = $sql_connection->query_database("SELECT users.userpassword as pwd FROM users WHERE users.userid = '".$_SESSION['userid']."';");
 				
 				if (($res[0][pwd]) != '')
 				{		
 					if ( ($res[0][pwd]) == (md5($_POST['current_pwd'])) )
 					{
-						$sql_connection->get_data("UPDATE users SET users.userpassword = '".md5($_POST['new_pwd'])."' WHERE users.userid = '".$_SESSION['userid']."';");
+						$sql_connection->query_database("UPDATE users SET users.userpassword = '".md5($_POST['new_pwd'])."' WHERE users.userid = '".$_SESSION['userid']."';");
 						header("location:".$_SESSION['root_url'].'php/core/changePwd.php?err=1');
 
 					} else {

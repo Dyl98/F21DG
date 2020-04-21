@@ -7,10 +7,10 @@
 <?php
 	function staff_name($staffid) {
 		/* Instantiate mysql class */
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		
 		/* Write query between brackets */
-		$staff_members = $sql_connection->get_data("SELECT staff_members.forename, staff_members.surname FROM staff_members WHERE staffid = ".$staffid);
+		$staff_members = $sql_connection->query_database("SELECT staff_members.forename, staff_members.surname FROM staff_members WHERE staffid = ".$staffid);
 		
 		/* Execute query */
 		$result = $sql_connection->query();
@@ -24,10 +24,10 @@
 
 	function module_count($staffid) {
 		/* Instantiate mysql class */
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		
 		/* Write query between brackets */
-		$staff_members = $sql_connection->get_data("SELECT * FROM current_modules_xref WHERE staffid = ".$staffid);
+		$staff_members = $sql_connection->query_database("SELECT * FROM current_modules_xref WHERE staffid = ".$staffid);
 		
 		/* Execute query */
 		$result = $sql_connection->query();
@@ -38,10 +38,10 @@
 
 	function admin_count($staffid) {
 		/* Instantiate mysql class */
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		
 		/* Write query between brackets */
-		$staff_members = $sql_connection->get_data("SELECT * FROM admin_tasks_xref WHERE staffid = ".$staffid);
+		$staff_members = $sql_connection->query_database("SELECT * FROM admin_tasks_xref WHERE staffid = ".$staffid);
 		
 		/* Execute query */
 		$result = $sql_connection->query();
@@ -52,10 +52,10 @@
 
 	function research_count($staffid) {
 		/* Instantiate mysql class */
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		
 		/* Write query between brackets */
-		$staff_members = $sql_connection->get_data("SELECT * FROM research_duties_xref WHERE staffid = ".$staffid);
+		$staff_members = $sql_connection->query_database("SELECT * FROM research_duties_xref WHERE staffid = ".$staffid);
 		
 		/* Execute query */
 		$result = $sql_connection->query();
@@ -74,12 +74,12 @@
 
 	function module_percentage($staffid) {
 		/* Instantiate mysql class */
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 
 		$total_percentage = 0;
 		
 		/* Write query between brackets */
-		$current_modules = $sql_connection->get_data("SELECT * FROM current_modules_xref WHERE staffid = ".$staffid);
+		$current_modules = $sql_connection->query_database("SELECT * FROM current_modules_xref WHERE staffid = ".$staffid);
 		
 		/* Loop and display query results */
 		foreach($current_modules as $current_module){
@@ -94,12 +94,12 @@
 
 	function admin_percentage($staffid) {
 		/* Instantiate mysql class */
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		
 		$total_percentage = 0;
 		
 		/* Write query between brackets */
-		$admin_tasks = $sql_connection->get_data("SELECT * FROM admin_tasks_xref WHERE staffid = ".$staffid);
+		$admin_tasks = $sql_connection->query_database("SELECT * FROM admin_tasks_xref WHERE staffid = ".$staffid);
 		
 		/* Loop and display query results */
 		foreach($admin_tasks as $admin_task){
@@ -114,12 +114,12 @@
 
 	function research_percentage($staffid) {
 		/* Instantiate mysql class */
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		
 		$total_percentage = 0;
 		
 		/* Write query between brackets */
-		$research_duties = $sql_connection->get_data("SELECT * FROM research_duties_xref WHERE staffid = ".$staffid);
+		$research_duties = $sql_connection->query_database("SELECT * FROM research_duties_xref WHERE staffid = ".$staffid);
 		
 		/* Loop and display query results */
 		foreach($research_duties as $research_duty){
