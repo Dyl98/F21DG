@@ -33,7 +33,6 @@
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
 		$admin_tasks = $sql_connection->query_database("SELECT * FROM admin_tasks WHERE availability".$period." = 1 ORDER BY name ASC");
-
 		/* Loop and display query results */
 		foreach($admin_tasks as $admin_task){
 ?>
@@ -93,7 +92,6 @@
 		/* Instantiate mysql class and execute sql query */
 
 		$admin_tasks = get_admin_info($adminid);
-
 		/* Loop and display query results */
 		foreach($admin_tasks as $admin_task){
 ?>
@@ -139,6 +137,7 @@
 		$sql_connection = new mySQLi_helper();
 		$staff_members = $sql_connection->query_database("SELECT DISTINCT * FROM Staff WHERE (Staff.StaffID) NOT IN ( SELECT StaffID FROM StaffTasks WHERE TaskID = ".$adminid.") ORDER BY forename ASC");
 		$all_percentages = $sql_connection->query_database("SELECT * FROM StaffTasks WHERE TaskID = ".$adminid);
+
 		foreach($all_percentages as $all_percentage){
 			$total_percentage += $all_percentage["WorkloadPercentage"];
 		}

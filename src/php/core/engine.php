@@ -8,7 +8,6 @@
 	function get_staff_info($staffid) {
 		$sql_connection = new mySQLi_helper();
 		$staff_info = $sql_connection->query_database("SELECT * FROM Staff WHERE StaffID = ".$staffid.";");
-
 		return $staff_info;
 	}
 ?>
@@ -17,7 +16,6 @@
 	function get_modules_by_staff($staffid) {
 		$sql_connection = new mySQLi_helper();
 		$modules_by_staff = $sql_connection->query_database("SELECT DISTINCT * FROM Tasks AS T, StaffTasks AS ST, CourseDetails AS CD WHERE T.TaskID = ST.TaskID AND T.TaskID = CD.TaskID AND ST.StaffID = '".$staffid."';");
-
 		return $modules_by_staff;
 	}
 ?>
@@ -26,7 +24,6 @@
 	function get_tasks_by_staff($staffid) {
 		$sql_connection = new mySQLi_helper();
 		$tasks_by_staff = $sql_connection->query_database("SELECT DISTINCT * FROM Tasks AS T, StaffTasks AS ST WHERE T.TaskID = ST.TaskID AND ST.StaffID = '".$staffid."' AND NOT EXISTS (SELECT TaskID FROM CourseDetails WHERE TaskID = ST.TaskID) AND NOT EXISTS (SELECT TaskID FROM ResearchDetails where TaskID = ST.TaskID);");
-
 		return $tasks_by_staff;
 	}
 ?>
@@ -35,7 +32,6 @@
 	function get_duties_by_staff($staffid) {
 		$sql_connection = new mySQLi_helper();
 		$duties_by_staff = $sql_connection->query_database("SELECT DISTINCT * FROM Tasks AS T, StaffTasks AS ST, ResearchDetails AS RD WHERE T.TaskID = ST.TaskID AND T.TaskID = RD.TaskID AND ST.StaffID = '".$staffid."';");
-
 		return $duties_by_staff;
 	}
 ?>
@@ -44,7 +40,6 @@
 	function get_staff_by_task($taskid) {
 		$sql_connection = new mySQLi_helper();
 		$staff_by_task = $sql_connection->query_database("SELECT DISTINCT * FROM Staff, StaffTasks WHERE Staff.StaffID = StaffTasks.StaffID AND StaffTasks.TaskID = '".$moduleid."' ORDER BY Forename ASC;");
-
 		return $staff_by_task;
 	}
 ?>
@@ -53,7 +48,6 @@
 	function get_module_info($moduleid) {
 		$sql_connection = new mySQLi_helper();
 		$module_info = $sql_connection->query_database("SELECT * FROM Tasks, CourseDetails WHERE Tasks.TaskID = '".$moduleid."' AND Tasks.TaskID = CourseDetails.TaskID;");
-
 		return $module_info;
 	}
 ?>
@@ -69,7 +63,6 @@
 	function get_admin_info($adminid) {
 		$sql_connection = new mySQLi_helper();
 		$admin_info = $sql_connection->query_database("SELECT * FROM Tasks WHERE TaskID = '".$adminid."' ORDER BY Name ASC;");
-
 		return $admin_info;
 	}
 ?>
@@ -85,7 +78,6 @@
 	function get_research_info($researchid) {
 		$sql_connection = new mySQLi_helper();
 		$research_info = $sql_connection->query_database("SELECT * FROM Tasks, ResearchDetails AS RD WHERE Tasks.TaskID = RD.TaskID AND Tasks.TaskID = ".$researchid.";");
-
 		return $research_info;
 	}
 ?>

@@ -7,9 +7,9 @@
 
         if (!isset($_SESSION['helpSysBlocked']))
         {
-                $sql_connection = new CMySQL();
+                $sql_connection = new mySQLi_helper();
 
-                $res = $sql_connection->get_data("SELECT users.helpsys_enabled FROM users WHERE userid = ".$_SESSION['userid'].";");
+                $res = $sql_connection->query_database("SELECT users.helpsys_enabled FROM users WHERE userid = ".$_SESSION['userid'].";");
 
                 if ($res[0][helpsys_enabled] == '1')
                 {
@@ -23,9 +23,9 @@
 
         if (!isset($_SESSION['mailSysBlocked']))
         {
-                $sql_connection = new CMySQL();
+                $sql_connection = new mySQLi_helper();
 
-                $res = $sql_connection->get_data("SELECT users.mail_notify_enabled FROM users WHERE userid = ".$_SESSION['userid'].";");
+                $res = $sql_connection->query_database("SELECT users.mail_notify_enabled FROM users WHERE userid = ".$_SESSION['userid'].";");
 
                 if ($res[0][mail_notify_enabled] == '1')
                 {
