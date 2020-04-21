@@ -7,8 +7,8 @@
 <?php
 	function show_admin_tasks() {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$admin_tasks = $sql_connection->get_data("SELECT * FROM Tasks AS T WHERE NOT EXISTS (SELECT TaskID FROM CourseDetails WHERE TaskID = ST.TaskID) AND NOT EXISTS (SELECT TaskID FROM ResearchDetails where TaskID = ST.TaskID) ORDER BY T.Name ASC");
+		$sql_connection = new mySQLi_helper();
+		$admin_tasks = $sql_connection->query_database("SELECT * FROM Tasks AS T WHERE NOT EXISTS (SELECT TaskID FROM CourseDetails WHERE TaskID = ST.TaskID) AND NOT EXISTS (SELECT TaskID FROM ResearchDetails where TaskID = ST.TaskID) ORDER BY T.Name ASC");
 
 		/* Loop and display query results */
 		foreach($admin_tasks as $admin_task){
@@ -31,8 +31,8 @@
 <?php //TODO make this work with new date system
 	function show_admin_tasks_filtered($period) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$admin_tasks = $sql_connection->get_data("SELECT * FROM admin_tasks WHERE availability".$period." = 1 ORDER BY name ASC");
+		$sql_connection = new mySQLi_helper();
+		$admin_tasks = $sql_connection->query_database("SELECT * FROM admin_tasks WHERE availability".$period." = 1 ORDER BY name ASC");
 
 		/* Loop and display query results */
 		foreach($admin_tasks as $admin_task){
@@ -136,9 +136,9 @@
 <?php // This function appears to be the UI for adding a staff member to a task.
 	function add_admin_task_xref($adminid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$staff_members = $sql_connection->get_data("SELECT DISTINCT * FROM Staff WHERE (Staff.StaffID) NOT IN ( SELECT StaffID FROM StaffTasks WHERE TaskID = ".$adminid.") ORDER BY forename ASC");
-		$all_percentages = $sql_connection->get_data("SELECT * FROM StaffTasks WHERE TaskID = ".$adminid);
+		$sql_connection = new mySQLi_helper();
+		$staff_members = $sql_connection->query_database("SELECT DISTINCT * FROM Staff WHERE (Staff.StaffID) NOT IN ( SELECT StaffID FROM StaffTasks WHERE TaskID = ".$adminid.") ORDER BY forename ASC");
+		$all_percentages = $sql_connection->query_database("SELECT * FROM StaffTasks WHERE TaskID = ".$adminid);
 		foreach($all_percentages as $all_percentage){
 			$total_percentage += $all_percentage["WorkloadPercentage"];
 		}

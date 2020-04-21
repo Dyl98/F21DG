@@ -7,8 +7,8 @@
 <?php
 	function show_staff_members() {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$staff_members = $sql_connection->get_data("SELECT * FROM staff_members ORDER BY forename ASC");
+		$sql_connection = new mySQLi_helper();
+		$staff_members = $sql_connection->query_database("SELECT * FROM staff_members ORDER BY forename ASC");
 
 		/* Loop and display query results */
 		foreach($staff_members as $staff_member){
@@ -31,8 +31,8 @@
 <?php
 	function show_staff_members_filtered($period) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$staff_members = $sql_connection->get_data("SELECT * FROM staff_members WHERE availability".$period." = 1 ORDER BY forename ASC");
+		$sql_connection = new mySQLi_helper();
+		$staff_members = $sql_connection->query_database("SELECT * FROM staff_members WHERE availability".$period." = 1 ORDER BY forename ASC");
 
 		/* Loop and display query results */
 		foreach($staff_members as $staff_member){
@@ -91,8 +91,8 @@
 <?php
 	function edit_staff_member($staffid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$staff_members = $sql_connection->get_data("SELECT * FROM staff_members WHERE staffid=".$staffid." ORDER BY forename ASC");
+		$sql_connection = new mySQLi_helper();
+		$staff_members = $sql_connection->query_database("SELECT * FROM staff_members WHERE staffid=".$staffid." ORDER BY forename ASC");
 
 		/* Loop and display query results */
 		foreach($staff_members as $staff_member){
@@ -136,7 +136,7 @@
 <?php
 	function remove_staff_member($staffid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		$sql_connection->add_query("DELETE FROM staff_members WHERE staffid = ".$staffid);
 		$sql_connection->add_query("DELETE FROM current_modules_xref WHERE staffid = ".$staffid);
 		$sql_connection->add_query("DELETE FROM admin_tasks_xref WHERE staffid = ".$staffid);
@@ -150,8 +150,8 @@
 <?php
 	function add_module_xref($staffid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$current_modules = $sql_connection->get_data("SELECT DISTINCT * FROM current_modules WHERE (current_modules.moduleid) NOT IN ( SELECT current_modules_xref.moduleid FROM current_modules_xref WHERE current_modules_xref.staffid = ".$staffid.") ORDER BY name ASC");
+		$sql_connection = new mySQLi_helper();
+		$current_modules = $sql_connection->query_database("SELECT DISTINCT * FROM current_modules WHERE (current_modules.moduleid) NOT IN ( SELECT current_modules_xref.moduleid FROM current_modules_xref WHERE current_modules_xref.staffid = ".$staffid.") ORDER BY name ASC");
 
 		if(count($current_modules) > 0){
 ?>
@@ -200,8 +200,8 @@
 <?php
 	function view_module_xref($staffid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$current_modules = $sql_connection->get_data("SELECT current_modules_xref.staffid, current_modules_xref.moduleid, current_modules_xref.percentage, current_modules.moduleid, current_modules.code, current_modules.name FROM current_modules_xref, current_modules WHERE (current_modules_xref.staffid = \"".$staffid."\") AND (current_modules_xref.moduleid = current_modules.moduleid) ORDER BY name ASC");
+		$sql_connection = new mySQLi_helper();
+		$current_modules = $sql_connection->query_database("SELECT current_modules_xref.staffid, current_modules_xref.moduleid, current_modules_xref.percentage, current_modules.moduleid, current_modules.code, current_modules.name FROM current_modules_xref, current_modules WHERE (current_modules_xref.staffid = \"".$staffid."\") AND (current_modules_xref.moduleid = current_modules.moduleid) ORDER BY name ASC");
 
 		/* Loop and display query results */
 		foreach($current_modules as $current_module){
@@ -224,7 +224,7 @@
 <?php
 	function remove_module_xref($staffid,$moduleid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		$sql_connection->add_query("DELETE FROM current_modules_xref WHERE (staffid = ".$staffid.") AND (moduleid = ".$moduleid.")");
 		$result = $sql_connection->query();
 		return;
@@ -235,8 +235,8 @@
 <?php
 	function add_admin_task_xref($staffid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$admin_tasks = $sql_connection->get_data("SELECT DISTINCT * FROM admin_tasks WHERE (admin_tasks.adminid) NOT IN ( SELECT admin_tasks_xref.adminid FROM admin_tasks_xref WHERE admin_tasks_xref.staffid = ".$staffid.") ORDER BY name ASC");
+		$sql_connection = new mySQLi_helper();
+		$admin_tasks = $sql_connection->query_database("SELECT DISTINCT * FROM admin_tasks WHERE (admin_tasks.adminid) NOT IN ( SELECT admin_tasks_xref.adminid FROM admin_tasks_xref WHERE admin_tasks_xref.staffid = ".$staffid.") ORDER BY name ASC");
 
 		if(count($admin_tasks) > 0){
 ?>
@@ -285,8 +285,8 @@
 <?php
 	function view_admin_task_xref($staffid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$admin_tasks = $sql_connection->get_data("SELECT admin_tasks_xref.staffid, admin_tasks_xref.adminid, admin_tasks_xref.percentage, admin_tasks.adminid, admin_tasks.name, admin_tasks.description FROM admin_tasks_xref, admin_tasks WHERE (admin_tasks_xref.staffid = \"".$staffid."\") AND (admin_tasks_xref.adminid = admin_tasks.adminid) ORDER BY name ASC");
+		$sql_connection = new mySQLi_helper();
+		$admin_tasks = $sql_connection->query_database("SELECT admin_tasks_xref.staffid, admin_tasks_xref.adminid, admin_tasks_xref.percentage, admin_tasks.adminid, admin_tasks.name, admin_tasks.description FROM admin_tasks_xref, admin_tasks WHERE (admin_tasks_xref.staffid = \"".$staffid."\") AND (admin_tasks_xref.adminid = admin_tasks.adminid) ORDER BY name ASC");
 
 		/* Loop and display query results */
 		foreach($admin_tasks as $admin_task){
@@ -309,8 +309,8 @@
 <?php
 	function add_research_duty_xref($staffid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$research_duties = $sql_connection->get_data("SELECT DISTINCT * FROM research_duties WHERE (research_duties.researchid) NOT IN ( SELECT research_duties_xref.researchid FROM research_duties_xref WHERE research_duties_xref.staffid = ".$staffid.") ORDER BY name ASC");
+		$sql_connection = new mySQLi_helper();
+		$research_duties = $sql_connection->query_database("SELECT DISTINCT * FROM research_duties WHERE (research_duties.researchid) NOT IN ( SELECT research_duties_xref.researchid FROM research_duties_xref WHERE research_duties_xref.staffid = ".$staffid.") ORDER BY name ASC");
 
 		if(count($research_duties) > 0){
 ?>
@@ -359,8 +359,8 @@
 <?php
 	function view_research_duty_xref($staffid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
-		$research_duties = $sql_connection->get_data("SELECT research_duties_xref.staffid, research_duties_xref.researchid, research_duties_xref.percentage, research_duties.researchid, research_duties.name, research_duties.researchtype, research_duties.description FROM research_duties_xref, research_duties WHERE (research_duties_xref.staffid = \"".$staffid."\") AND (research_duties_xref.researchid = research_duties.researchid) ORDER BY name ASC");
+		$sql_connection = new mySQLi_helper();
+		$research_duties = $sql_connection->query_database("SELECT research_duties_xref.staffid, research_duties_xref.researchid, research_duties_xref.percentage, research_duties.researchid, research_duties.name, research_duties.researchtype, research_duties.description FROM research_duties_xref, research_duties WHERE (research_duties_xref.staffid = \"".$staffid."\") AND (research_duties_xref.researchid = research_duties.researchid) ORDER BY name ASC");
 
 		/* Loop and display query results */
 		foreach($research_duties as $research_duty){
@@ -384,7 +384,7 @@
 <?php
 	function remove_research_duty_xref($staffid,$researchid) {
 		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new CMySQL();
+		$sql_connection = new mySQLi_helper();
 		$sql_connection->add_query("DELETE FROM research_duties_xref WHERE (staffid = ".$staffid.") AND (researchid = ".$researchid.")");
 		$result = $sql_connection->query();
 		return;

@@ -9,8 +9,8 @@
 	{
 		include_once("php/core/engine.php");
 
-		$sql_connection = new CMySQL();
-                $res = $sql_connection->get_data("SELECT users.userid FROM users WHERE users.username = '".$_POST['username']."' AND users.userpassword = '".md5($_POST['password'])."';");
+		$sql_connection = new mySQLi_helper();
+                $res = $sql_connection->query_database("SELECT users.userid FROM users WHERE users.username = '".$_POST['username']."' AND users.userpassword = '".md5($_POST['password'])."';");
 
 		/* if the user exists in the database */
 		if ($res[0][userid] != '')
