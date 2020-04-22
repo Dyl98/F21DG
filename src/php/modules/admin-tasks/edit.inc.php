@@ -34,7 +34,6 @@
 							This admin task does not exist. <a href=\"../admin-tasks/\">Click here to return to the previous page.</a>
 						</noscript>
 					";
-					break;
 				}
 			?>
 			<div class="form">

@@ -39,7 +39,7 @@
 <?php	//This gets the details of staff assigned to a given task (of any type)
 	function get_staff_by_task($taskid) {
 		$sql_connection = new mySQLi_helper();
-		$staff_by_task = $sql_connection->query_database("SELECT DISTINCT * FROM Staff, StaffTasks WHERE Staff.StaffID = StaffTasks.StaffID AND StaffTasks.TaskID = '".$moduleid."' ORDER BY Forename ASC;");
+		$staff_by_task = $sql_connection->query_database("SELECT DISTINCT * FROM Staff, StaffTasks WHERE Staff.StaffID = StaffTasks.StaffID AND StaffTasks.TaskID = '".$taskid."' ORDER BY Forename ASC;");
 		return $staff_by_task;
 	}
 ?>

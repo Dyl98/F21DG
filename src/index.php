@@ -85,7 +85,7 @@
 		                                                                        break;
 										case 'authors':
 											echo "Inventive software 2009: Steven Clark, Thomas Clulow, Nicolas-Olivier De La Cruz, Alexander R. MacDonald, Lachlan Malone, Jonas Termeau, Dean Thomson";
-											echo "2020 Refactor: Dylan Forrest, Tommy Lamb"
+											echo "2020 Refactor: Dylan Forrest, Tommy Lamb";
 											break;
 		                                                        }
 	                                                	}

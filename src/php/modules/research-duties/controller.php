@@ -8,17 +8,17 @@
 	function show_research_duties() {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$research_duties = $sql_connection->query_database("SELECT * FROM research_duties ORDER BY name ASC");
+		$research_duties = $sql_connection->query_database("SELECT ResearchDetails.Funded, Roles.Name as RolesName, Tasks.* FROM Tasks INNER JOIN ResearchDetails ON Tasks.TaskID=ResearchDetails.TaskID INNER JOIN Roles ON Roles.RoleID=Tasks.Classification ORDER BY Name ASC");		
 		
 		/* Loop and display query results */
 		foreach($research_duties as $research_duty){
 ?>
-			<div id="<?php echo $research_duty["researchid"]; ?>" class="row-entry"><!-- Row entry research duty -->
-				<a href="edit.php?id=<?php echo $research_duty["researchid"]; ?>">
-					<span class="research-row-name"><?php if($research_duty["name"]!="") {echo $research_duty["name"];} else { echo "Name not entered"; } ?></span>
-					<span class="research-row-type"><?php if($research_duty["researchtype"]!="") {echo $research_duty["researchtype"];} else { echo "Type not entered"; } ?></span>
-					<span class="research-row-description"><?php if($research_duty["description"]!="") {echo $research_duty["description"];} else { echo "Description not entered"; } ?></span>
-					<span class="research-row-weighting"><?php echo $research_duty["weighting"]; ?></span>
+			<div id="<?php echo $research_duty["TaskID"]; ?>" class="row-entry"><!-- Row entry research duty -->
+				<a href="edit.php?id=<?php echo $research_duty["TaskID"]; ?>">
+					<span class="research-row-name"><?php if($research_duty["Name"]!="") {echo $research_duty["Name"];} else { echo "Name not entered"; } ?></span>
+					<span class="research-row-type"><?php if($research_duty["RolesName"]!="") {echo $research_duty["RolesName"];} else { echo "Type not entered"; } ?></span>
+					<span class="research-row-description"><?php if($research_duty["Description"]!="") {echo $research_duty["Description"];} else { echo "Description not entered"; } ?></span>
+					<span class="research-row-weighting"><?php echo $research_duty["WorkUnits"]; ?></span>
 					<span class="row-link">More</span>
 				</a>
 			</div>

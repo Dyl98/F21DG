@@ -34,12 +34,11 @@
 							This module does not exist. <a href=\"../current-modules/\">Click here to return to the previous page.</a>
 						</noscript>
 					";
-					break;
 				}
 			?>
 			<div class="form">
-				<h1><?php echo $module[0]['code']." ".$module[0]['name']; ?></h1>
-				<h2><a href="<?php echo $module[0]['descriptor']; ?>"><?php echo $module[0]['descriptor']; ?></a></h2>
+				<h1><?php echo $module[0]['Code']." ".$module[0]['Name']; ?></h1>
+				<h2><a href="<?php echo $module[0]['Description']; ?>"><?php echo $module[0]['Description']; ?></a></h2>
 				<br />
 				<?php
 					$staff = get_staff_by_module($_GET["id"]);
@@ -49,9 +48,9 @@
 					$counter = 0;
 					foreach($staff as $staff_single) {
 						$counter++;					
-						$parameters .= ':'.$staff_single['staffid'].':'.$staff_single['percentage'];
+						$parameters .= ':'.$staff_single['StaffID'].':'.$staff_single['WorkloadPercentage'];
 						
-						$temp .= "<h3><a href=\"../staff-members/edit.php?id=".$staff_single['staffid']."\">".$staff_single['forename']." ".$staff_single['surname']."</a></h3>";
+						$temp .= "<h3><a href=\"../staff-members/edit.php?id=".$staff_single['StaffID']."\">".$staff_single['Forename']." ".$staff_single['Surname']."</a></h3>";
 					}
 					echo '<img src="../graphs-and-charts/module-pie.php?data='.$parameters.'" width="420px" height="250px" />';
 					echo '<br /><br />';

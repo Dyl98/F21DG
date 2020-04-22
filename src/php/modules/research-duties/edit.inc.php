@@ -34,11 +34,10 @@
 							This research duty does not exist. <a href=\"../research-duties/\">Click here to return to the previous page.</a>
 						</noscript>
 					";
-					break;
 				}
 			?>
 			<div class="form">
-				<h1><?php echo $research[0]['name']; ?></h1>
+				<h1><?php echo $research[0]['Name']; ?></h1>
 				<br />
 				<?php
 					$staff = get_staff_by_research($_GET["id"]);
@@ -47,10 +46,11 @@
 					
 					$counter = 0;
 					foreach($staff as $staff_single) {
+						var_dump($staff_single);
 						$counter++;					
-						$parameters .= ':'.$staff_single['staffid'].':'.$staff_single['percentage'];
+						$parameters .= ':'.$staff_single['StaffID'].':'.$staff_single['WorkloadPercentage'];
 						
-						$temp .= "<h3><a href=\"../staff-members/edit.php?id=".$staff_single['staffid']."\">".$staff_single['forename']." ".$staff_single['surname']."</a></h3>";
+						$temp .= "<h3><a href=\"../staff-members/edit.php?id=".$staff_single['StaffID']."\">".$staff_single['Forename']." ".$staff_single['Surname']."</a></h3>";
 					}
 					echo '<img src="../graphs-and-charts/research-pie.php?data='.$parameters.'" width="420px" height="250px" />';
 					echo '<br /><br />';

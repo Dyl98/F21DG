@@ -8,16 +8,16 @@
 	function show_current_modules() {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$current_modules = $sql_connection->query_database("SELECT * FROM current_modules ORDER BY name ASC");
+		$current_modules = $sql_connection->query_database("SELECT CourseDetails.Code, CourseDetails.StudentCount, Tasks.* FROM Tasks INNER JOIN Tasks ON Tasks.TaskID=CourseDetails.TaskID ORDER BY Name ASC");
 		
 		/* Loop and display query results */
 		foreach($current_modules as $current_module){
 ?>
-			<div id="<?php echo $current_module["moduleid"]; ?>" class="row-entry"><!-- Row entry for module -->
-				<a href="edit.php?id=<?php echo $current_module["moduleid"]; ?>">
-					<span class="module-row-code"><?php if($current_module["code"]!="") {echo $current_module["code"];} else { echo "Code not entered"; } ?></span>
-					<span class="module-row-name"><?php if($current_module["name"]!="") {echo $current_module["name"];} else { echo "Module name not entered"; } ?></span>
-					<span class="module-row-weighting"><?php echo $current_module["weighting"]; ?></span>
+			<div id="<?php echo $current_module["TaskID"]; ?>" class="row-entry"><!-- Row entry for module -->
+				<a href="edit.php?id=<?php echo $current_module["TaskID"]; ?>">
+					<span class="module-row-code"><?php if($current_module["Code"]!="") {echo $current_module["Code"];} else { echo "Code not entered"; } ?></span>
+					<span class="module-row-name"><?php if($current_module["Name"]!="") {echo $current_module["Name"];} else { echo "Module name not entered"; } ?></span>
+					<span class="module-row-weighting"><?php echo $current_module["WorkUnits"]; ?></span>
 					<span class="row-link">More</span>
 				</a>
 			</div>
