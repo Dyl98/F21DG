@@ -314,7 +314,7 @@
 	function add_research_duty_xref($staffid) {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$research_duties = $sql_connection->query_database("SELECT DISTINCT * FROM research_duties WHERE (research_duties.researchid) NOT IN ( SELECT research_duties_xref.researchid FROM research_duties_xref WHERE research_duties_xref.staffid = ".$staffid.") ORDER BY name ASC");
+		$research_duties = $sql_connection->query_database("SELECT DISTINCT *, Tasks.Name FROM Tasks, ResearchDetails WHERE (ResearchDetails.TaskID) NOT IN ( SELECT StaffTasks.TaskID FROM StaffTasks WHERE StaffTasks.StaffID = $staffid) AND Tasks.Classification=2 ORDER BY Tasks.Name ASC");
 
 		if(count($research_duties) > 0){
 ?>
@@ -326,10 +326,10 @@
 <?php
 				foreach($research_duties as $research_duty){
 ?>
-					<option value="<?php echo $research_duty["researchid"]; ?>">
-						<?php if($research_duty["name"]!="") {echo $research_duty["name"];} else { echo "Duty name not entered"; } ?>
+					<option value="<?php echo $research_duty["TaskID"]; ?>">
+						<?php if($research_duty["Name"]!="") {echo $research_duty["Name"];} else { echo "Duty name not entered"; } ?>
 						&nbsp;-&nbsp;
-						<?php if($research_duty["description"]!="") {echo $research_duty["description"];} else { echo "Duty description not entered"; } ?>
+						<?php if($research_duty["Description"]!="") {echo $research_duty["Description"];} else { echo "Duty description not entered"; } ?>
 					</option>
 <?php
 				}
@@ -361,22 +361,23 @@
 
 
 <?php
-	/* TODO: Update query to use new database */
+
 	function view_research_duty_xref($staffid) {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$research_duties = $sql_connection->query_database("SELECT research_duties_xref.staffid, research_duties_xref.researchid, research_duties_xref.percentage, research_duties.researchid, research_duties.name, research_duties.researchtype, research_duties.description FROM research_duties_xref, research_duties WHERE (research_duties_xref.staffid = \"".$staffid."\") AND (research_duties_xref.researchid = research_duties.researchid) ORDER BY name ASC");
 
+		/* Check if Classification=2 as this indicates Research */
+		$research_duties = $sql_connection->query_database("SELECT StaffTasks.*, Tasks.*, Roles.Name AS RoleName FROM StaffTasks INNER JOIN Tasks ON StaffTasks.TaskID=Tasks.TaskID INNER JOIN Roles ON StaffTasks.DesignatedRole=Roles.RoleID WHERE StaffID=$staffid AND Classification=2 ORDER BY Name ASC");
 		/* Loop and display query results */
 		foreach($research_duties as $research_duty){
 ?>
-			<div id="<?php echo $research_duty["researchid"]; ?>" class="row-entry"><!-- Row entry research duty -->
+			<div id="<?php echo $research_duty["TaskID"]; ?>" class="row-entry"><!-- Row entry research duty -->
 
-					<span class="research-row-name"><?php if($research_duty["name"]!="") {echo $research_duty["name"];} else { echo "Name not entered"; } ?></span>
-					<span class="research-row-type"><?php if($research_duty["researchtype"]!="") {echo $research_duty["researchtype"];} else { echo "Type not entered"; } ?></span>
-					<span class="research-row-description"><?php if($research_duty["description"]!="") {echo $research_duty["description"];} else { echo "Description not entered"; } ?></span>
-					<span class="research-row-weighting"><?php echo $research_duty["percentage"]; ?></span>
-					<span class="row-link row-link-red"><a href="remove-research-duties-xref.php?staffid=<?php echo $staffid; ?>&researchid=<?php echo $research_duty["researchid"]; ?>">Unassign</a></span>
+					<span class="research-row-name"><?php if($research_duty["Name"]!="") {echo $research_duty["Name"];} else { echo "Name not entered"; } ?></span>
+					<span class="research-row-type"><?php if($research_duty["RoleName"]!="") {echo $research_duty["RoleName"];} else { echo "Type not entered"; } ?></span>
+					<span class="research-row-description"><?php if($research_duty["Description"]!="") {echo $research_duty["Description"];} else { echo "Description not entered"; } ?></span>
+					<span class="research-row-weighting"><?php echo $research_duty["WorkloadPercentage"]; ?></span>
+					<span class="row-link row-link-red"><a href="remove-research-duties-xref.php?staffid=<?php echo $staffid; ?>&researchid=<?php echo $research_duty["TaskID"]; ?>">Unassign</a></span>
 
 			</div>
 <?php

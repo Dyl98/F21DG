@@ -8,7 +8,7 @@
 	function show_current_modules() {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$current_modules = $sql_connection->query_database("SELECT CourseDetails.Code, CourseDetails.StudentCount, Tasks.* FROM Tasks INNER JOIN Tasks ON Tasks.TaskID=CourseDetails.TaskID ORDER BY Name ASC");
+		$current_modules = $sql_connection->query_database("SELECT CourseDetails.Code, CourseDetails.StudentCount, Tasks.* FROM Tasks INNER JOIN CourseDetails ON Tasks.TaskID=CourseDetails.TaskID ORDER BY Name ASC");
 		
 		/* Loop and display query results */
 		foreach($current_modules as $current_module){
@@ -100,30 +100,30 @@
 	function edit_module($moduleid) {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$current_modules = $sql_connection->query_database("SELECT * FROM current_modules WHERE moduleid=".$moduleid." ORDER BY name ASC");
+		$current_modules = $sql_connection->query_database("SELECT CourseDetails.Code, CourseDetails.StudentCount, Tasks.* FROM Tasks INNER JOIN CourseDetails ON Tasks.TaskID=CourseDetails.TaskID WHERE Tasks.TaskID=$moduleid ORDER BY Name ASC");
 		
 		/* Loop and display query results */
 		foreach($current_modules as $current_module){
 ?>
 			<!-- Send form contents to edit-form.php -->
 			<form id="edit-module" class="form" method="post" action="edit-form.php?moduleid=<?php echo $moduleid; ?>">
-				<input type="hidden" name="moduleid" value="<?php echo $current_module["moduleid"]; ?>" />
+				<input type="hidden" name="moduleid" value="<?php echo $current_module["TaskID"]; ?>" />
 				<label class="form-label">Module Code: </label>
-				<input name="code" class="form-field" type="text" size="50" value="<?php echo $current_module["code"]; ?>" />
+				<input name="code" class="form-field" type="text" size="50" value="<?php echo $current_module["Code"]; ?>" />
 				<br />
 				<br />
 				<label class="form-label">Module Name: </label>
-				<input name="name" class="form-field" type="text" size="50" value="<?php echo $current_module["name"]; ?>" />
+				<input name="name" class="form-field" type="text" size="50" value="<?php echo $current_module["Name"]; ?>" />
 				<br />
 				<br />
 				<label class="form-label">Descriptor Link: </label>		
-				<input name="descriptor" class="form-field" type="text" size="50" value="<?php echo $current_module["descriptor"]; ?>" />
+				<input name="descriptor" class="form-field" type="text" size="50" value="<?php echo $current_module["Description"]; ?>" />
 				<br />
 				<br />
 				<label class="form-label">Weighting: </label>		
 				<select name="weighting" class="form-field">
 				<?php for($counter = 1; $counter < 11; $counter++){ ?>
-					<option<?php if($current_module["weighting"] == $counter) { echo " selected=\"selected\""; } ?>><?php echo $counter; ?></option>
+					<option<?php if($current_module["WorkUnits"] == $counter) { echo " selected=\"selected\""; } ?>><?php echo $counter; ?></option>
 				<?php } ?>
 				</select>
 				<br />
@@ -163,12 +163,13 @@
 
 <?php
 	function add_module_xref($moduleid) {
+		$total_percentage = 0;
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$staff_members = $sql_connection->query_database("SELECT DISTINCT * FROM staff_members WHERE (staff_members.staffid) NOT IN ( SELECT current_modules_xref.staffid FROM current_modules_xref WHERE current_modules_xref.moduleid = ".$moduleid.") ORDER BY forename ASC");
-		$all_percentages = $sql_connection->query_database("SELECT * FROM current_modules_xref WHERE current_modules_xref.moduleid = ".$moduleid);
+		$staff_members = $sql_connection->query_database("SELECT DISTINCT * FROM Staff WHERE (Staff.StaffID) NOT IN ( SELECT StaffID FROM StaffTasks WHERE TaskID = ".$moduleid.") ORDER BY Forename ASC");
+		$all_percentages = $sql_connection->query_database("SELECT * FROM StaffTasks WHERE TaskID = ".$moduleid);
 		foreach($all_percentages as $all_percentage){
-			$total_percentage += $all_percentage["percentage"];
+			$total_percentage += $all_percentage["WorkloadPercentage"];
 		}
 
 		if((count($staff_members) > 0) && ($total_percentage < 100)) {
@@ -185,21 +186,21 @@
 				foreach($staff_members as $staff_member){
 					if ($counter == 0)
 					{
-						$current_letter = substr($staff_member["forename"],0,1);
+						$current_letter = substr($staff_member["Forename"],0,1);
 						echo '<optgroup class="listgroup" label="'.$current_letter.'">';
 					}
 
-					if (substr($staff_member["forename"],0,1) != $current_letter)
+					if (substr($staff_member["Forename"],0,1) != $current_letter)
 					{
 						echo '</optgroup>';
-						$current_letter = substr($staff_member["forename"],0,1);
+						$current_letter = substr($staff_member["Forename"],0,1);
 						echo '<optgroup class="listgroup" label="'.$current_letter.'">';
 					}
 ?>
-					<option class="listcolor<?php echo $i; ?>" value="<?php echo $staff_member["staffid"]; ?>">
-						&nbsp;&nbsp;&nbsp;&nbsp;<?php if($staff_member["forename"]!="" && $staff_member["surname"]!="") {echo $staff_member["forename"]."&nbsp;".$staff_member["surname"];} else { echo "Full name not entered"; } ?>
+					<option class="listcolor<?php echo $i; ?>" value="<?php echo $staff_member["StaffID"]; ?>">
+						&nbsp;&nbsp;&nbsp;&nbsp;<?php if($staff_member["Forename"]!="" && $staff_member["Surname"]!="") {echo $staff_member["Forename"]."&nbsp;".$staff_member["Surname"];} else { echo "Full name not entered"; } ?>
 						&nbsp;-&nbsp;
-						<?php if($staff_member["email"]!="") {echo $staff_member["email"];} else { echo "E-Mail not entered"; } ?>
+						<?php if($staff_member["Email"]!="") {echo $staff_member["Email"];} else { echo "E-Mail not entered"; } ?>
 					</option>
 					<?php $i = -($i - 1);
 					$counter = $counter +1;
@@ -235,18 +236,18 @@
 	function view_module_xref($moduleid) {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$staff_members = $sql_connection->query_database("SELECT current_modules_xref.staffid, current_modules_xref.moduleid, current_modules_xref.percentage, staff_members.staffid, staff_members.forename, staff_members.surname, staff_members.email FROM current_modules_xref, staff_members WHERE (current_modules_xref.moduleid = \"".$moduleid."\") AND (current_modules_xref.staffid = staff_members.staffid) ORDER BY forename ASC");
+		$staff_members = get_staff_by_module($moduleid);
 		
 		/* Loop and display query results */
 		$counter = 0;
 		foreach($staff_members as $staff_member){
 ?>
-			<div id="<?php echo $staff_member["staffid"]; ?>" class="row-entry"><!-- Row entry for assigned staff member -->
+			<div id="<?php echo $staff_member["StaffID"]; ?>" class="row-entry"><!-- Row entry for assigned staff member -->
 				
-					<span class="staff-row-name"><?php if($staff_member["forename"]!="" && $staff_member["surname"]!="") {echo $staff_member["forename"]."&nbsp;".$staff_member["surname"];} else { echo "Full name not entered"; } ?></span>
-					<span class="staff-row-email"><?php if($staff_member["email"]!="") {echo $staff_member["email"];} else { echo "E-Mail not entered"; } ?></span>
-					<span class="staff-row-workload"><?php echo $staff_member["percentage"]."&#37;" ?></span>
-					<span class="row-link row-link-red"><a href="remove-xref.php?staffid=<?php echo $staff_member["staffid"]; ?>&moduleid=<?php echo $moduleid; ?>">Unassign</a></span>
+					<span class="staff-row-name"><?php if($staff_member["Forename"]!="" && $staff_member["Surname"]!="") {echo $staff_member["Forename"]."&nbsp;".$staff_member["Surname"];} else { echo "Full name not entered"; } ?></span>
+					<span class="staff-row-email"><?php if($staff_member["Email"]!="") {echo $staff_member["Email"];} else { echo "E-Mail not entered"; } ?></span>
+					<span class="staff-row-workload"><?php echo $staff_member["WorkloadPercentage"]."&#37;" ?></span>
+					<span class="row-link row-link-red"><a href="remove-xref.php?staffid=<?php echo $staff_member["StaffID"]; ?>&moduleid=<?php echo $moduleid; ?>">Unassign</a></span>
 				
 			</div>
 			<?php $counter = $counter +1;

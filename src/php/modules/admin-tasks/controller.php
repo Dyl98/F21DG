@@ -8,7 +8,18 @@
 	function show_admin_tasks() {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$admin_tasks = $sql_connection->query_database("SELECT * FROM Tasks AS T WHERE NOT EXISTS (SELECT TaskID FROM CourseDetails WHERE TaskID = T.TaskID) AND NOT EXISTS (SELECT TaskID FROM ResearchDetails where TaskID = T.TaskID) ORDER BY T.Name ASC");
+
+		/* 	Temporary way of getting the admin tasks 
+		  	Between 3 AND 6 is chosen as:
+		 
+		   	1 | Teaching
+			2 | Research
+			3 | Administrative
+			4 | External Activity
+			5 | Other Authorised Engagement
+			6 | Commercialisation
+		*/
+		$admin_tasks = $sql_connection->query_database("SELECT * FROM Tasks WHERE Classification BETWEEN 3 AND 6 ORDER BY Name ASC");
 
 		/* Loop and display query results */
 		foreach($admin_tasks as $admin_task){
@@ -133,9 +144,10 @@
 
 <?php // This function appears to be the UI for adding a staff member to a task.
 	function add_admin_task_xref($adminid) {
+		$total_percentage = 0;
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$staff_members = $sql_connection->query_database("SELECT DISTINCT * FROM Staff WHERE (Staff.StaffID) NOT IN ( SELECT StaffID FROM StaffTasks WHERE TaskID = ".$adminid.") ORDER BY forename ASC");
+		$staff_members = $sql_connection->query_database("SELECT DISTINCT * FROM Staff WHERE (Staff.StaffID) NOT IN ( SELECT StaffID FROM StaffTasks WHERE TaskID = ".$adminid.") ORDER BY Forename ASC");
 		$all_percentages = $sql_connection->query_database("SELECT * FROM StaffTasks WHERE TaskID = ".$adminid);
 
 		foreach($all_percentages as $all_percentage){

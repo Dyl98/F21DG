@@ -46,7 +46,6 @@
 					
 					$counter = 0;
 					foreach($staff as $staff_single) {
-						var_dump($staff_single);
 						$counter++;					
 						$parameters .= ':'.$staff_single['StaffID'].':'.$staff_single['WorkloadPercentage'];
 						
