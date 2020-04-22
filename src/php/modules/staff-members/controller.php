@@ -8,16 +8,16 @@
 	function show_staff_members() {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$staff_members = $sql_connection->query_database("SELECT * FROM staff_members ORDER BY forename ASC");
-		
+		$staff_members = $sql_connection->query_database("SELECT * FROM Staff ORDER BY Forename ASC");
+
 		/* Loop and display query results */
 		foreach($staff_members as $staff_member){
 ?>
-			<div id="<?php echo $staff_member["staffid"]; ?>" class="row-entry"><!-- Row entry for staff member -->
-				<a href="edit.php?id=<?php echo $staff_member["staffid"]; ?>">
-					<span class="staff-row-name"><?php if($staff_member["forename"]!="" && $staff_member["surname"]!="") {echo $staff_member["forename"]."&nbsp;".$staff_member["surname"];} else { echo "Full name not entered"; } ?></span>
-					<span class="staff-row-email"><?php if($staff_member["email"]!="") {echo $staff_member["email"];} else { echo "E-Mail not entered"; } ?></span>
-					<span class="staff-row-workload"><img src="../graphs-and-charts/staff-bar-rotated.php?staffid=<?php echo $staff_member["staffid"]; ?>" alt="Graph Error" width="150px" height="16px" id="_helpStaffBar" /></span>
+			<div id="<?php echo $staff_member["StaffID"]; ?>" class="row-entry"><!-- Row entry for staff member -->
+				<a href="edit.php?id=<?php echo $staff_member["StaffID"]; ?>">
+					<span class="staff-row-name"><?php if($staff_member["Forename"]!="" && $staff_member["Surname"]!="") {echo $staff_member["Forename"]."&nbsp;".$staff_member["Surname"];} else { echo "Full name not entered"; } ?></span>
+					<span class="staff-row-email"><?php if($staff_member["Email"]!="") {echo $staff_member["Email"];} else { echo "E-Mail not entered"; } ?></span>
+					<span class="staff-row-workload"><img src="../graphs-and-charts/staff-bar-rotated.php?staffid=<?php echo $staff_member["StaffID"]; ?>" alt="Graph Error" width="150px" height="16px" id="_helpStaffBar" /></span>
 					<span class="row-link">More</span>
 				</a>
 			</div>
@@ -29,19 +29,22 @@
 
 
 <?php
+	/* TODO: This function still has to be updated to use new database
+			 the availability field no longer exists
+	 */
 	function show_staff_members_filtered($period) {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
 		$staff_members = $sql_connection->query_database("SELECT * FROM staff_members WHERE availability".$period." = 1 ORDER BY forename ASC");
-		
+
 		/* Loop and display query results */
 		foreach($staff_members as $staff_member){
 ?>
-			<div id="<?php echo $staff_member["staffid"]; ?>" class="row-entry"><!-- Row entry for staff member -->
-				<a href="edit.php?id=<?php echo $staff_member["staffid"]; ?>">
+			<div id="<?php echo $staff_member["StaffID"]; ?>" class="row-entry"><!-- Row entry for staff member -->
+				<a href="edit.php?id=<?php echo $staff_member["StaffID"]; ?>">
 					<span class="staff-row-name"><?php if($staff_member["forename"]!="" && $staff_member["surname"]!="") {echo $staff_member["forename"]."&nbsp;".$staff_member["surname"];} else { echo "Full name not entered"; } ?></span>
 					<span class="staff-row-email"><?php if($staff_member["email"]!="") {echo $staff_member["email"];} else { echo "E-Mail not entered"; } ?></span>
-					<span class="staff-row-workload"><img src="../graphs-and-charts/staff-bar-rotated.php?staffid=<?php echo $staff_member["staffid"]; ?>" alt="Graph Error" width="150px" height="16px" id="_helpStaffBar" /></span>
+					<span class="staff-row-workload"><img src="../graphs-and-charts/staff-bar-rotated.php?staffid=<?php echo $staff_member["StaffID"]; ?>" alt="Graph Error" width="150px" height="16px" id="_helpStaffBar" /></span>
 					<span class="row-link">More</span>
 				</a>
 			</div>
@@ -65,7 +68,7 @@
 			<input name="surname" class="form-field" type="text" size="25" value="" />
 			<br />
 			<br />
-			<label class="form-label">E-Mail: </label>		
+			<label class="form-label">E-Mail: </label>
 			<input name="email" class="form-field" type="text" size="25" value="" />
 			<br />
 			<br />
@@ -92,24 +95,24 @@
 	function edit_staff_member($staffid) {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$staff_members = $sql_connection->query_database("SELECT * FROM staff_members WHERE staffid=".$staffid." ORDER BY forename ASC");
-		
+		$staff_members = $sql_connection->query_database("SELECT * FROM Staff WHERE StaffID=".$staffid." ORDER BY Forename ASC");
+
 		/* Loop and display query results */
 		foreach($staff_members as $staff_member){
 ?>
 			<!-- Send form contents to edit-form.php -->
 			<form id="edit-staff-member" class="form" method="post" action="edit-form.php">
-				<input type="hidden" name="staffid" value="<?php echo $staff_member["staffid"]; ?>" />
+				<input type="hidden" name="StaffID" value="<?php echo $staff_member["StaffID"]; ?>" />
 				<label class="form-label">Forename: </label>
-				<input name="forename" class="form-field" type="text" size="25" value="<?php echo $staff_member["forename"]; ?>" />
+				<input name="forename" class="form-field" type="text" size="25" value="<?php echo $staff_member["Forename"]; ?>" />
 				<br />
 				<br />
 				<label class="form-label">Surname: </label>
-				<input name="surname" class="form-field" type="text" size="25" value="<?php echo $staff_member["surname"]; ?>" />
+				<input name="surname" class="form-field" type="text" size="25" value="<?php echo $staff_member["Surname"]; ?>" />
 				<br />
 				<br />
-				<label class="form-label">E-Mail: </label>		
-				<input name="email" class="form-field" type="text" size="25" value="<?php echo $staff_member["email"]; ?>" />
+				<label class="form-label">E-Mail: </label>
+				<input name="email" class="form-field" type="text" size="25" value="<?php echo $staff_member["Email"]; ?>" />
 				<br />
 				<br />
 				<label class="form-label">Availability: </label>
@@ -151,22 +154,22 @@
 	function add_module_xref($staffid) {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$current_modules = $sql_connection->query_database("SELECT DISTINCT * FROM current_modules WHERE (current_modules.moduleid) NOT IN ( SELECT current_modules_xref.moduleid FROM current_modules_xref WHERE current_modules_xref.staffid = ".$staffid.") ORDER BY name ASC");
+		$current_modules = $sql_connection->query_database("SELECT DISTINCT * FROM CourseDetails WHERE (CourseDetails.TaskID) NOT IN ( SELECT StaffTasks.TaskID FROM StaffTasks WHERE StaffTasks.StaffID = $staffid) ORDER BY Name ASC");
 
 		if(count($current_modules) > 0){
 ?>
 		<!-- Send form contents to add-form-xref.php -->
 		<form id="add-module-xref" class="form" method="post" action="add-form-current-modules-xref.php?staffid=<?php echo $staffid; ?>">
-			<input type="hidden" name="staffid" value="<?php echo $staffid; ?>" />
+			<input type="hidden" name="StaffID" value="<?php echo $staffid; ?>" />
 			<label class="form-label">Current Modules: </label>
 			<select name="moduleid" class="form-field">
 <?php
 				foreach($current_modules as $current_module){
 ?>
-					<option value="<?php echo $current_module["moduleid"]; ?>">
-						<?php if($current_module["code"]!="") {echo $current_module["code"];} else { echo "Module code not entered"; } ?>
+					<option value="<?php echo $current_module["TaskID"]; ?>">
+						<?php if($current_module["Code"]!="") {echo $current_module["Code"];} else { echo "Module code not entered"; } ?>
 						&nbsp;-&nbsp;
-						<?php if($current_module["name"]!="") {echo $current_module["name"];} else { echo "Module name not entered"; } ?>
+						<?php if($current_module["Name"]!="") {echo $current_module["Name"];} else { echo "Module name not entered"; } ?>
 					</option>
 <?php
 				}
@@ -174,7 +177,7 @@
 			</select>
 			<br />
 			<br />
-			<label class="form-label">Percentage Taken: </label>		
+			<label class="form-label">Percentage Taken: </label>
 			<select name="percentage" class="form-field">
 			<?php for($counter = 1; $counter < 101; $counter++){ ?>
 				<option><?php echo $counter; ?></option>
@@ -201,18 +204,18 @@
 	function view_module_xref($staffid) {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$current_modules = $sql_connection->query_database("SELECT current_modules_xref.staffid, current_modules_xref.moduleid, current_modules_xref.percentage, current_modules.moduleid, current_modules.code, current_modules.name FROM current_modules_xref, current_modules WHERE (current_modules_xref.staffid = \"".$staffid."\") AND (current_modules_xref.moduleid = current_modules.moduleid) ORDER BY name ASC");
-		
+		$current_modules = $sql_connection->query_database("SELECT StaffTasks.*, Staff.*, CourseDetails.* FROM StaffTasks JOIN Staff ON Staff.StaffID=StaffTasks.StaffID JOIN CourseDetails ON CourseDetails.TaskID=StaffTasks.TaskID WHERE StaffTasks.StaffID=$staffid ORDER BY Name ASC");
+
 		/* Loop and display query results */
 		foreach($current_modules as $current_module){
 ?>
-			<div id="<?php echo $current_module["moduleid"]; ?>" class="row-entry"><!-- Row entry for module -->
-				
-					<span class="module-row-code"><?php if($current_module["code"]!="") {echo $current_module["code"];} else { echo "Code not entered"; } ?></span>
-					<span class="module-row-name"><?php if($current_module["name"]!="") {echo $current_module["name"];} else { echo "Module name not entered"; } ?></span>
-					<span class="module-row-weighting"><?php echo $current_module["percentage"]."&#37;"; ?></span>
-					<span class="row-link row-link-red"><a href="remove-current-modules-xref.php?staffid=<?php echo $staffid; ?>&moduleid=<?php echo $current_module["moduleid"]; ?>">Unassign</a></span>
-				
+			<div id="<?php echo $current_module["TaskID"]; ?>" class="row-entry"><!-- Row entry for module -->
+
+					<span class="module-row-code"><?php if($current_module["Code"]!="") {echo $current_module["Code"];} else { echo "Code not entered"; } ?></span>
+					<span class="module-row-name"><?php if($current_module["Name"]!="") {echo $current_module["Name"];} else { echo "Module name not entered"; } ?></span>
+					<span class="module-row-weighting"><?php echo $current_module["WorkloadPercentage"]."&#37;"; ?></span>
+					<span class="row-link row-link-red"><a href="remove-current-modules-xref.php?staffid=<?php echo $staffid; ?>&moduleid=<?php echo $current_module["TaskID"]; ?>">Unassign</a></span>
+
 			</div>
 <?php
 		}
@@ -236,22 +239,22 @@
 	function add_admin_task_xref($staffid) {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$admin_tasks = $sql_connection->query_database("SELECT DISTINCT * FROM admin_tasks WHERE (admin_tasks.adminid) NOT IN ( SELECT admin_tasks_xref.adminid FROM admin_tasks_xref WHERE admin_tasks_xref.staffid = ".$staffid.") ORDER BY name ASC");
+		$admin_tasks = $sql_connection->query_database("SELECT DISTINCT StaffTasks.*, Tasks.* FROM StaffTasks JOIN Tasks ON Tasks.TaskID=StaffTasks.TaskID WHERE NOT StaffTasks.StaffID=$staffid AND Tasks.TaskID NOT IN (SELECT TaskID FROM CourseDetails) AND Tasks.TaskID NOT IN (SELECT TaskID FROM ResearchDetails) AND Tasks.TaskID NOT IN (SELECT TaskID FROM StaffTasks WHERE StaffTasks.StaffID=$staffid) ORDER BY Name ASC");
 
 		if(count($admin_tasks) > 0){
 ?>
 		<!-- Send form contents to add-form-xref.php -->
 		<form id="add-admin-task-xref" class="form" method="post" action="add-form-admin-tasks-xref.php?staffid=<?php echo $staffid; ?>">
-			<input type="hidden" name="staffid" value="<?php echo $staffid; ?>" />
+			<input type="hidden" name="StaffID" value="<?php echo $staffid; ?>" />
 			<label class="form-label">Admin Tasks: </label>
 			<select name="adminid" class="form-field">
 <?php
 				foreach($admin_tasks as $admin_task){
 ?>
-					<option value="<?php echo $admin_task["adminid"]; ?>">
-						<?php if($admin_task["name"]!="") {echo $admin_task["name"];} else { echo "Task name not entered"; } ?>
+					<option value="<?php echo $admin_task["TaskID"]; ?>">
+						<?php if($admin_task["Name"]!="") {echo $admin_task["Name"];} else { echo "Task name not entered"; } ?>
 						&nbsp;-&nbsp;
-						<?php if($admin_task["description"]!="") {echo $admin_task["description"];} else { echo "Task description not entered"; } ?>
+						<?php if($admin_task["Description"]!="") {echo $admin_task["Description"];} else { echo "Task description not entered"; } ?>
 					</option>
 <?php
 				}
@@ -259,7 +262,7 @@
 			</select>
 			<br />
 			<br />
-			<label class="form-label">Percentage Taken: </label>		
+			<label class="form-label">Percentage Taken: </label>
 			<select name="percentage" class="form-field">
 			<?php for($counter = 1; $counter < 101; $counter++){ ?>
 				<option><?php echo $counter; ?></option>
@@ -286,18 +289,19 @@
 	function view_admin_task_xref($staffid) {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$admin_tasks = $sql_connection->query_database("SELECT admin_tasks_xref.staffid, admin_tasks_xref.adminid, admin_tasks_xref.percentage, admin_tasks.adminid, admin_tasks.name, admin_tasks.description FROM admin_tasks_xref, admin_tasks WHERE (admin_tasks_xref.staffid = \"".$staffid."\") AND (admin_tasks_xref.adminid = admin_tasks.adminid) ORDER BY name ASC");
+		$admin_tasks = $sql_connection->query_database("SELECT StaffTasks.*, Tasks.* FROM StaffTasks JOIN Tasks ON Tasks.TaskID=StaffTasks.TaskID WHERE StaffTasks.StaffID=$staffid AND Tasks.TaskID NOT IN (SELECT TaskID FROM CourseDetails) AND Tasks.TaskID NOT IN (SELECT TaskID FROM ResearchDetails) ORDER BY Name ASC");
 		
+
 		/* Loop and display query results */
 		foreach($admin_tasks as $admin_task){
 ?>
-			<div id="<?php echo $admin_task["adminid"]; ?>" class="row-entry"><!-- Row entry for admin task -->
-				
-					<span class="admin-row-name"><?php if($admin_task["name"]!="") {echo $admin_task["name"];} else { echo "Name not entered"; } ?></span>
-					<span class="admin-row-description"><?php if($admin_task["description"]!="") {echo $admin_task["description"];} else { echo "Description not entered"; } ?></span>
-					<span class="admin-row-weighting"><?php echo $admin_task["percentage"]."&#37;"; ?></span>
-					<span class="row-link row-link-red"><a href="remove-admin-tasks-xref.php?staffid=<?php echo $staffid; ?>&adminid=<?php echo $admin_task["adminid"]; ?>">Unassign</a></span>
-				
+			<div id="<?php echo $admin_task["TaskID"]; ?>" class="row-entry"><!-- Row entry for admin task -->
+
+					<span class="admin-row-name"><?php if($admin_task["Name"]!="") {echo $admin_task["Name"];} else { echo "Name not entered"; } ?></span>
+					<span class="admin-row-description"><?php if($admin_task["Description"]!="") {echo $admin_task["Description"];} else { echo "Description not entered"; } ?></span>
+					<span class="admin-row-weighting"><?php echo $admin_task["WorkloadPercentage"]."&#37;"; ?></span>
+					<span class="row-link row-link-red"><a href="remove-admin-tasks-xref.php?staffid=<?php echo $staffid; ?>&adminid=<?php echo $admin_task["TaskID"]; ?>">Unassign</a></span>
+
 			</div>
 <?php
 		}
@@ -307,36 +311,25 @@
 
 
 <?php
-	function remove_admin_task_xref($staffid,$adminid) {
-		/* Instantiate mysql class and execute sql query */
-		$sql_connection = new mySQLi_helper();
-		$sql_connection->add_query("DELETE FROM admin_tasks_xref WHERE (staffid = ".$staffid.") AND (adminid = ".$adminid.")");
-		$result = $sql_connection->query();
-		return;
-	}
-?>
-
-
-<?php
 	function add_research_duty_xref($staffid) {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$research_duties = $sql_connection->query_database("SELECT DISTINCT * FROM research_duties WHERE (research_duties.researchid) NOT IN ( SELECT research_duties_xref.researchid FROM research_duties_xref WHERE research_duties_xref.staffid = ".$staffid.") ORDER BY name ASC");
+		$research_duties = $sql_connection->query_database("SELECT DISTINCT *, Tasks.Name FROM Tasks, ResearchDetails WHERE (ResearchDetails.TaskID) NOT IN ( SELECT StaffTasks.TaskID FROM StaffTasks WHERE StaffTasks.StaffID = $staffid) AND Tasks.Classification=2 ORDER BY Tasks.Name ASC");
 
 		if(count($research_duties) > 0){
 ?>
 		<!-- Send form contents to add-form-xref.php -->
 		<form id="add-research-duty-xref" class="form" method="post" action="add-form-research-duties-xref.php?staffid=<?php echo $staffid; ?>">
-			<input type="hidden" name="staffid" value="<?php echo $staffid; ?>" />
+			<input type="hidden" name="StaffID" value="<?php echo $staffid; ?>" />
 			<label class="form-label">Research Duties: </label>
 			<select name="researchid" class="form-field">
 <?php
 				foreach($research_duties as $research_duty){
 ?>
-					<option value="<?php echo $research_duty["researchid"]; ?>">
-						<?php if($research_duty["name"]!="") {echo $research_duty["name"];} else { echo "Duty name not entered"; } ?>
+					<option value="<?php echo $research_duty["TaskID"]; ?>">
+						<?php if($research_duty["Name"]!="") {echo $research_duty["Name"];} else { echo "Duty name not entered"; } ?>
 						&nbsp;-&nbsp;
-						<?php if($research_duty["description"]!="") {echo $research_duty["description"];} else { echo "Duty description not entered"; } ?>
+						<?php if($research_duty["Description"]!="") {echo $research_duty["Description"];} else { echo "Duty description not entered"; } ?>
 					</option>
 <?php
 				}
@@ -344,7 +337,7 @@
 			</select>
 			<br />
 			<br />
-			<label class="form-label">Percentage Taken: </label>		
+			<label class="form-label">Percentage Taken: </label>
 			<select name="percentage" class="form-field">
 			<?php for($counter = 1; $counter < 101; $counter++){ ?>
 				<option><?php echo $counter; ?></option>
@@ -368,22 +361,24 @@
 
 
 <?php
+
 	function view_research_duty_xref($staffid) {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$research_duties = $sql_connection->query_database("SELECT research_duties_xref.staffid, research_duties_xref.researchid, research_duties_xref.percentage, research_duties.researchid, research_duties.name, research_duties.researchtype, research_duties.description FROM research_duties_xref, research_duties WHERE (research_duties_xref.staffid = \"".$staffid."\") AND (research_duties_xref.researchid = research_duties.researchid) ORDER BY name ASC");
-		
+
+		/* Check if Classification=2 as this indicates Research */
+		$research_duties = $sql_connection->query_database("SELECT StaffTasks.*, Tasks.*, Roles.Name AS RoleName FROM StaffTasks INNER JOIN Tasks ON StaffTasks.TaskID=Tasks.TaskID INNER JOIN Roles ON StaffTasks.DesignatedRole=Roles.RoleID WHERE StaffID=$staffid AND Classification=2 ORDER BY Name ASC");
 		/* Loop and display query results */
 		foreach($research_duties as $research_duty){
 ?>
-			<div id="<?php echo $research_duty["researchid"]; ?>" class="row-entry"><!-- Row entry research duty -->
-				
-					<span class="research-row-name"><?php if($research_duty["name"]!="") {echo $research_duty["name"];} else { echo "Name not entered"; } ?></span>
-					<span class="research-row-type"><?php if($research_duty["researchtype"]!="") {echo $research_duty["researchtype"];} else { echo "Type not entered"; } ?></span>
-					<span class="research-row-description"><?php if($research_duty["description"]!="") {echo $research_duty["description"];} else { echo "Description not entered"; } ?></span>
-					<span class="research-row-weighting"><?php echo $research_duty["percentage"]; ?></span>
-					<span class="row-link row-link-red"><a href="remove-research-duties-xref.php?staffid=<?php echo $staffid; ?>&researchid=<?php echo $research_duty["researchid"]; ?>">Unassign</a></span>
-				
+			<div id="<?php echo $research_duty["TaskID"]; ?>" class="row-entry"><!-- Row entry research duty -->
+
+					<span class="research-row-name"><?php if($research_duty["Name"]!="") {echo $research_duty["Name"];} else { echo "Name not entered"; } ?></span>
+					<span class="research-row-type"><?php if($research_duty["RoleName"]!="") {echo $research_duty["RoleName"];} else { echo "Type not entered"; } ?></span>
+					<span class="research-row-description"><?php if($research_duty["Description"]!="") {echo $research_duty["Description"];} else { echo "Description not entered"; } ?></span>
+					<span class="research-row-weighting"><?php echo $research_duty["WorkloadPercentage"]; ?></span>
+					<span class="row-link row-link-red"><a href="remove-research-duties-xref.php?staffid=<?php echo $staffid; ?>&researchid=<?php echo $research_duty["TaskID"]; ?>">Unassign</a></span>
+
 			</div>
 <?php
 		}

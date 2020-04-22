@@ -37,12 +37,11 @@
 							This user does not exist. <a href=\"../staff-members/\">Click here to return to the previous page.</a>
 						</noscript>
 					";
-					break;
 				}
 			?>
 			<div class="form">
-				<h1><?php echo $staff[0]['forename']." ".$staff[0]['surname']; ?></h1>
-				<h2><a href="mailto:<?php echo $staff[0]['email']; ?>"><?php echo $staff[0]['email']; ?></a></h2>
+				<h1><?php echo $staff[0]['Forename']." ".$staff[0]['Surname']; ?></h1>
+				<h2><a href="mailto:<?php echo $staff[0]['Email']; ?>"><?php echo $staff[0]['Email']; ?></a></h2>
 				<br />
 				<img src="../graphs-and-charts/staff-pie.php?staffid=<?php echo $_GET["id"]; ?>" width="420px" height="250px" alt=""/>
 				<br />
@@ -56,7 +55,7 @@
 					echo "<h2>Assigned modules:</h2>";
 					foreach($modules as $module) {
 						$counter++;
-						echo "  <h3><a href=\"../current-modules/edit.php?id=".$module['moduleid']."\">".$module['code']." - ".$module['name']."</a></h3>";
+						echo "  <h3><a href=\"../current-modules/edit.php?id=".$module['TaskID']."\">".$module['Code']." - ".$module['Name']."</a></h3>";
 					}
 					if ($counter == 0) { echo "<h3>(No modules assigned to this staff member)</h3>"; }
 					echo "<br />";
@@ -65,7 +64,7 @@
 					echo "<h2>Assigned admin tasks:</h2>";
 					foreach($tasks as $task) {
 						$counter++;
-						echo "<h3><a href=\"../admin-tasks/edit.php?id=".$task['adminid']."\">".$task['name']."</a></h3>";
+						echo "<h3><a href=\"../admin-tasks/edit.php?id=".$task['TaskID']."\">".$task['Name']."</a></h3>";
 					}
 					if ($counter == 0) { echo "<h3>(No admin tasks assigned to this staff member)</h3>"; }
 					echo "<br />";
@@ -74,7 +73,7 @@
 					echo "<h2>Assigned research duties:</h2>";
 						foreach($duties as $duty) {
 						$counter++;					
-						echo "<h3><a href=\"../research-duties/edit.php?id=".$duty['researchid']."\">".$duty['name']."</a></h3>";
+						echo "<h3><a href=\"../research-duties/edit.php?id=".$duty['TaskID']."\">".$duty['Name']."</a></h3>";
 					}
 					if ($counter == 0) { echo "<h3>(No research duties assigned to this user)</h3>"; }
 				?>

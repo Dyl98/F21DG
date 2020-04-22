@@ -23,7 +23,9 @@ Surname		varchar(32) NOT NULL,
 Office 		varchar(8) NOT NULL,
 Email		varchar(256) NOT NULL,
 PhoneExt	varchar(11) NOT NULL,
-Campus		varchar(32) NOT NULL
+Campus		varchar(32) NOT NULL,
+INDEX (Forename),
+INDEX (Surname)
 ) ENGINE=INNODB;
 
 CREATE TABLE Classifications (
@@ -51,7 +53,8 @@ Name			varchar(64) NOT NULL,
 Description		varchar(2048) NOT NULL,
 WorkUnits		int(4) NOT NULL,
 Classification	int(2) NOT NULL,
-FOREIGN KEY (Classification) REFERENCES Classifications (ClassificationID) ON UPDATE CASCADE
+FOREIGN KEY (Classification) REFERENCES Classifications (ClassificationID) ON UPDATE CASCADE,
+INDEX (Name)
 ) ENGINE=INNODB;
 
 CREATE TABLE Dates (

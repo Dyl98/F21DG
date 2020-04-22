@@ -1,6 +1,6 @@
 <?php
 	require_once('../../core/engine.php'); 
-        include_once('../../core/protect.php');
+    include_once('../../core/protect.php');
 ?>
 
 
@@ -8,17 +8,17 @@
 	function show_research_duties() {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$research_duties = $sql_connection->query_database("SELECT * FROM research_duties ORDER BY name ASC");
+		$research_duties = $sql_connection->query_database("SELECT ResearchDetails.Funded, Roles.Name as RolesName, Tasks.* FROM Tasks INNER JOIN ResearchDetails ON Tasks.TaskID=ResearchDetails.TaskID INNER JOIN Roles ON Roles.RoleID=Tasks.Classification ORDER BY Name ASC");		
 		
 		/* Loop and display query results */
 		foreach($research_duties as $research_duty){
 ?>
-			<div id="<?php echo $research_duty["researchid"]; ?>" class="row-entry"><!-- Row entry research duty -->
-				<a href="edit.php?id=<?php echo $research_duty["researchid"]; ?>">
-					<span class="research-row-name"><?php if($research_duty["name"]!="") {echo $research_duty["name"];} else { echo "Name not entered"; } ?></span>
-					<span class="research-row-type"><?php if($research_duty["researchtype"]!="") {echo $research_duty["researchtype"];} else { echo "Type not entered"; } ?></span>
-					<span class="research-row-description"><?php if($research_duty["description"]!="") {echo $research_duty["description"];} else { echo "Description not entered"; } ?></span>
-					<span class="research-row-weighting"><?php echo $research_duty["weighting"]; ?></span>
+			<div id="<?php echo $research_duty["TaskID"]; ?>" class="row-entry"><!-- Row entry research duty -->
+				<a href="edit.php?id=<?php echo $research_duty["TaskID"]; ?>">
+					<span class="research-row-name"><?php if($research_duty["Name"]!="") {echo $research_duty["Name"];} else { echo "Name not entered"; } ?></span>
+					<span class="research-row-type"><?php if($research_duty["RolesName"]!="") {echo $research_duty["RolesName"];} else { echo "Type not entered"; } ?></span>
+					<span class="research-row-description"><?php if($research_duty["Description"]!="") {echo $research_duty["Description"];} else { echo "Description not entered"; } ?></span>
+					<span class="research-row-weighting"><?php echo $research_duty["WorkUnits"]; ?></span>
 					<span class="row-link">More</span>
 				</a>
 			</div>
@@ -103,30 +103,30 @@
 	function edit_research_duty($researchid) {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$research_duties = $sql_connection->query_database("SELECT * FROM research_duties WHERE researchid=".$researchid." ORDER BY name ASC");
+		$research_duties = $sql_connection->query_database("SELECT Roles.Name AS RolesName, Tasks.* FROM Tasks INNER JOIN Roles ON Roles.RoleID=Tasks.Classification WHERE Tasks.TaskID=$researchid ORDER BY Name ASC");
 		
 		/* Loop and display query results */
 		foreach($research_duties as $research_duty){
 ?>
 			<!-- Send form contents to edit-form.php -->
 			<form id="edit-research-duty" class="form" method="post" action="edit-form.php">
-				<input type="hidden" name="researchid" value="<?php echo $research_duty["researchid"]; ?>" />
+				<input type="hidden" name="researchid" value="<?php echo $research_duty["TaskID"]; ?>" />
 				<label class="form-label">Duty Name: </label>
-				<input name="name" class="form-field" type="text" size="50" value="<?php echo $research_duty["name"]; ?>" />
+				<input name="name" class="form-field" type="text" size="50" value="<?php echo $research_duty["Name"]; ?>" />
 				<br />
 				<br />
 				<label class="form-label">Duty Type: </label>
-				<input name="researchtype" class="form-field" type="text" size="50" value="<?php echo $research_duty["researchtype"]; ?>" />
+				<input name="researchtype" class="form-field" type="text" size="50" value="<?php echo $research_duty["RolesName"]; ?>" />
 				<br />
 				<br />
 				<label class="form-label">Duty Description: </label>
-				<input name="description" class="form-field" type="text" size="50" value="<?php echo $research_duty["description"]; ?>" />
+				<input name="description" class="form-field" type="text" size="50" value="<?php echo $research_duty["Description"]; ?>" />
 				<br />
 				<br />
 				<label class="form-label">Weighting: </label>		
 				<select name="weighting" class="form-field">
 				<?php for($counter = 1; $counter < 11; $counter++){ ?>
-					<option<?php if($research_duty["weighting"] == $counter) { echo " selected=\"selected\""; } ?>><?php echo $counter; ?></option>
+					<option<?php if($research_duty["WorkUnits"] == $counter) { echo " selected=\"selected\""; } ?>><?php echo $counter; ?></option>
 				<?php } ?>
 				</select>
 				<br />
@@ -167,11 +167,12 @@
 <?php
 	function add_research_duty_xref($researchid) {
 		/* Instantiate mysql class and execute sql query */
+		$total_percentage = 0;
 		$sql_connection = new mySQLi_helper();
-		$staff_members = $sql_connection->query_database("SELECT DISTINCT * FROM staff_members WHERE (staff_members.staffid) NOT IN ( SELECT research_duties_xref.staffid FROM research_duties_xref WHERE research_duties_xref.researchid = ".$researchid.") ORDER BY forename ASC");
-		$all_percentages = $sql_connection->query_database("SELECT * FROM research_duties_xref WHERE research_duties_xref.researchid = ".$researchid);
+		$staff_members = $sql_connection->query_database("SELECT DISTINCT * FROM Staff WHERE (Staff.StaffID) NOT IN ( SELECT StaffID FROM StaffTasks WHERE TaskID = ".$researchid.") ORDER BY Forename ASC");
+		$all_percentages = $sql_connection->query_database("SELECT * FROM StaffTasks WHERE TaskID = ".$researchid);
 		foreach($all_percentages as $all_percentage){
-			$total_percentage += $all_percentage["percentage"];
+			$total_percentage += $all_percentage["WorkloadPercentage"];
 		}
 
 		if((count($staff_members) > 0) && ($total_percentage < 100)) {
@@ -184,10 +185,10 @@
 <?php
 				foreach($staff_members as $staff_member){
 ?>
-					<option value="<?php echo $staff_member["staffid"]; ?>">
-						<?php if($staff_member["forename"]!="" && $staff_member["surname"]!="") {echo $staff_member["forename"]."&nbsp;".$staff_member["surname"];} else { echo "Full name not entered"; } ?>
+					<option value="<?php echo $staff_member["StaffID"]; ?>">
+						<?php if($staff_member["Forename"]!="" && $staff_member["Surname"]!="") {echo $staff_member["Forename"]."&nbsp;".$staff_member["surname"];} else { echo "Full name not entered"; } ?>
 						&nbsp;-&nbsp;
-						<?php if($staff_member["email"]!="") {echo $staff_member["email"];} else { echo "E-Mail not entered"; } ?>
+						<?php if($staff_member["Email"]!="") {echo $staff_member["Email"];} else { echo "E-Mail not entered"; } ?>
 					</option>
 <?php
 				}
@@ -222,17 +223,18 @@
 	function view_research_duty_xref($researchid) {
 		/* Instantiate mysql class and execute sql query */
 		$sql_connection = new mySQLi_helper();
-		$staff_members = $sql_connection->query_database("SELECT research_duties_xref.staffid, research_duties_xref.researchid, research_duties_xref.percentage, staff_members.staffid, staff_members.forename, staff_members.surname, staff_members.email FROM research_duties_xref, staff_members WHERE (research_duties_xref.researchid = \"".$researchid."\") AND (research_duties_xref.staffid = staff_members.staffid) ORDER BY forename ASC");
+		//$staff_members = $sql_connection->query_database("SELECT research_duties_xref.staffid, research_duties_xref.researchid, research_duties_xref.percentage, staff_members.staffid, staff_members.forename, staff_members.surname, staff_members.email FROM research_duties_xref, staff_members WHERE (research_duties_xref.researchid = \"".$researchid."\") AND (research_duties_xref.staffid = staff_members.staffid) ORDER BY forename ASC");
+		$staff_members = get_staff_by_research($researchid);
 		
 		/* Loop and display query results */
 		foreach($staff_members as $staff_member){
 ?>
-			<div id="<?php echo $staff_member["staffid"]; ?>" class="row-entry"><!-- Row entry for assigned staff member -->
+			<div id="<?php echo $staff_member["StaffID"]; ?>" class="row-entry"><!-- Row entry for assigned staff member -->
 				
-					<span class="staff-row-name"><?php if($staff_member["forename"]!="" && $staff_member["surname"]!="") {echo $staff_member["forename"]."&nbsp;".$staff_member["surname"];} else { echo "Full name not entered"; } ?></span>
-					<span class="staff-row-email"><?php if($staff_member["email"]!="") {echo $staff_member["email"];} else { echo "E-Mail not entered"; } ?></span>
-					<span class="staff-row-workload"><?php echo $staff_member["percentage"]."&#37;" ?></span>
-					<span class="row-link row-link-red"><a href="remove-xref.php?staffid=<?php echo $staff_member["staffid"]; ?>&researchid=<?php echo $researchid; ?>">Unassign</a></span>
+					<span class="staff-row-name"><?php if($staff_member["Forename"]!="" && $staff_member["Surname"]!="") {echo $staff_member["Forename"]."&nbsp;".$staff_member["Surname"];} else { echo "Full name not entered"; } ?></span>
+					<span class="staff-row-email"><?php if($staff_member["Email"]!="") {echo $staff_member["Email"];} else { echo "E-Mail not entered"; } ?></span>
+					<span class="staff-row-workload"><?php echo $staff_member["WorkloadPercentage"]."&#37;" ?></span>
+					<span class="row-link row-link-red"><a href="remove-xref.php?staffid=<?php echo $staff_member["StaffID"]; ?>&researchid=<?php echo $researchid; ?>">Unassign</a></span>
 				
 			</div>
 <?php

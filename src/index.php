@@ -5,7 +5,7 @@
 	session_start();
 
 	include_once("php/core/config.php");
-	
+
 	/* if there is a connection query then we proceeed it */
 	if ( (isset($_POST['username'])) && (isset($_POST['password'])) )
 	{
@@ -13,13 +13,13 @@
 
 		$sql_connection = new mySQLi_helper();
                 $res = $sql_connection->query_database("SELECT users.userid FROM users WHERE users.username = '".$_POST['username']."' AND users.userpassword = '".md5($_POST['password'])."';");
-		
+
 		/* if the user exists in the database */
 		if ($res[0][userid] != '')
-		{		
+		{
 			$_SESSION['userid'] = $res[0][userid];
 			$_SESSION['connected'] = 1;
-                	
+
 		}else{
 			header("location:".$_SESSION['root_url'].'index.php?err=1');
 		}
@@ -85,6 +85,7 @@
 		                                                                        break;
 										case 'authors':
 											echo "Inventive software 2009: Steven Clark, Thomas Clulow, Nicolas-Olivier De La Cruz, Alexander R. MacDonald, Lachlan Malone, Jonas Termeau, Dean Thomson";
+											echo "2020 Refactor: Dylan Forrest, Tommy Lamb";
 											break;
 		                                                        }
 	                                                	}

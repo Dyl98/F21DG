@@ -23,7 +23,7 @@ class mySQLi_helper {
 	 * @param 	$db 		Database to connect to
 	 * @param 	$host 		Host to connect to. This is where the database is located
 	 */
-	function __construct($user="csm",$password="management",$db="csm",$host="localhost"){
+	function __construct($user="csm",$password="management",$db="tommy_test",$host="localhost"){
 		// Generate connection details
 		$this->sql_username = $user;
 		$this->sql_password = $password;
@@ -64,8 +64,6 @@ class mySQLi_helper {
 
 		// Create connection to sql server
 		$this->connect_to_database();
-
-		$result_array = array();
 
 		$stmt = $this->mysqli_connection -> query($query);
 		$result = $stmt->fetchAll();
