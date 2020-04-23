@@ -19,7 +19,7 @@ mysql> CREATE DATABASE csm;
 ```
 shell> mysql -u <username> -p csm < CreateDatabase.sql
 ```
-3.	[src/php/core/mysql.php line 26](src/php/core/mysql.php#L26) update each of the parameters so they match the database you wish to connect to. **Note**: We plan to change this in the future as this way isn’t secure.\
+3.	[src/php/core/mysql.php line 26](src/php/core/mysql.php#L26) update each of the parameters so they match the database you wish to connect to. **Note**: We plan to change this in the future as this way isn’t secure.
 4.	(Optional) Import [InsertData.sql](sql/InsertData.sql) to the ‘csm’ database to import test data.
 ```
 shell> mysql -u <username> -p csm < InsertData.sql
