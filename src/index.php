@@ -1,6 +1,6 @@
 <?php
 	/* REMOVE THIS LINE WHEN DONE */
-	include_once("php/REMOVE/debug.php");
+//	include_once("php/REMOVE/debug.php");
 
 	session_start();
 
