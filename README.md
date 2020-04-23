@@ -1,4 +1,4 @@
-# F21DG
+# MACS-MS (Maths and Computer Science Management System)
 
 ## Prerequisites
 LAMP stack installed on development/live server. [Guide to install LAMP stack](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-ubuntu-18-04)
